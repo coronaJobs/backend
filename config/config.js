@@ -7,11 +7,12 @@ if (process.env.DB_LOGGING === '1') {
 }
 
 const config = {
-  username: process.env.DB_USERNAME,
-  password: process.env.DB_PASSWORD,
+  username: process.env.RDS_USERNAME,
+  password: process.env.RDS_PASSWORD,
   dialect: process.env.DB_DIALECT || 'postgres',
-  database: process.env.DB_NAME,
-  host: process.env.DB_HOST,
+  database: process.env.RDS_DB_NAME,
+  host: process.env.RDS_HOSTNAME,
+  port: process.env.RDS_PORT,
   logging: LOGGING,
 };
 

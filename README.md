@@ -5,14 +5,21 @@
 - create a file named ".env" in the root of this project with this content
 
 ```
-DB_USERNAME=postgres
-DB_PASSWORD=postgres
+RDS_USERNAME=postgres
+RDS_PASSWORD=postgres
 DB_DIALECT=postgres
-DB_NAME=postgres
-DB_HOST=database
+RDS_DB_NAME=postgres
+RDS_PORT=5432
+RDS_HOSTNAME=database
 DB_LOGGING=1
 APP_PORT=8080
 PLAYGROUND=1
+```
+
+- create a file named ".db.env" in the root of this project with this content
+
+```
+POSTGRES_PASSWORD=postgres
 ```
 
 - `npm install`
