@@ -8,6 +8,12 @@ const { db } = require('./../models');
 const app = new ApolloServer({
   typeDefs,
   resolvers,
+  onHealthCheck: () => {
+    return new Promise((resolve, reject) => {
+      // Replace the `true` in this conditional with more specific checks!
+      resolve()
+    });
+  },
   playground: process.env.PLAYGROUND,
   cors: {
     origin: '*'
