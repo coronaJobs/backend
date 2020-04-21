@@ -5,7 +5,9 @@ services:
   app:
     env_file:
       - .env
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile.web
     command: bash -c "npm run dev-start"
     volumes: 
       - .:/code

@@ -2,7 +2,7 @@ const { app } = require('./src/server')
 const { db } = require('./src/models')
 
 
-const PORT = process.env.APP_PORT;
+const PORT = process.env.PORT;
 
 // set database
 db.sequelize
