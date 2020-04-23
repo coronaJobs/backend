@@ -31,6 +31,7 @@ jobs:
     
     - name: Build and push image
       run: |
+        docker login --username ${docker_username} --password ${docker_password}
         heroku container:login
         heroku container:push web release --recursive --app=api-corona-jobs-staging
 
