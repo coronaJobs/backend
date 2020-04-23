@@ -22,7 +22,7 @@ jobs:
         username: ${docker_username}
         password: ${docker_password}
       
-    - name: Heroku Login
+    - name: Heroku netrc file
       run: |
         cat >~/.netrc <<EOF
         machine api.heroku.com
@@ -32,7 +32,9 @@ jobs:
             login ${email}
             password ${api_key}
         EOF
-        
+    
+    - name: Heorku login
+      run: |
         heroku login
     
     - name: Heroku registry login
