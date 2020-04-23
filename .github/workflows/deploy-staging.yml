@@ -19,19 +19,21 @@ jobs:
     - name: Docker login
       uses: azure/docker-login@v1
       with:
-        username: ${docker_username}
-        password: ${docker_password}
+        username: ${{secrets.docker_username}}
+        password: ${{secrets.docker_password}}
       
     - name: Heroku netrc file
       run: |
         cat >~/.netrc <<EOF
         machine api.heroku.com
-            login ${email}
-            password ${api_key}
+            login ${{secrets.email}}
+            password ${{secrets.api_key}}
         machine git.heroku.com
-            login ${email}
-            password ${api_key}
+            login ${{secrets.email}}
+            password ${{secrets.api_key}}
         EOF
+        
+        heroku login
 
     
     - name: Heroku registry login
