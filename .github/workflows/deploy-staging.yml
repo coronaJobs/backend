@@ -32,10 +32,7 @@ jobs:
             login ${email}
             password ${api_key}
         EOF
-    
-    - name: Heorku login
-      run: |
-        heroku login
+
     
     - name: Heroku registry login
       run: |
