@@ -31,5 +31,11 @@ jobs:
     
     - name: Build and push image
       run: |
-        docker --help
+        heroku container:login
+        heroku container:push web release --recursive --app=api-corona-jobs-staging
+
+        
+    - name: Release
+      run: |
+        heroku container:release web release --app=api-corona-jobs-staging
         
