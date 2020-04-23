@@ -35,12 +35,14 @@ jobs:
         
         heroku login
     
-    - name: Build and push image
+    - name: Heroku registry login
       run: |
         heroku container:login
+      
+    - name: Build and push image
+      run: |
         heroku container:push web release --recursive --app=api-corona-jobs-staging
 
-        
     - name: Release
       run: |
         heroku container:release web release --app=api-corona-jobs-staging
