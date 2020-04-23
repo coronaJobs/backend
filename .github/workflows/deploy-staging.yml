@@ -1,1 +1,79 @@
+name: deploy-staging
+on:
+  push:
+      branches:
+        - 'development'
 
+jobs:
+  buildAndDeploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v1
+    
+    - name: Install Heroku Cli
+      run: |
+        curl https://cli-assets.heroku.com/install-ubuntu.sh | sh
+      
+    - name: Heroku Login
+      run: |
+        cat >~/.netrc <<EOF
+        machine api.heroku.com
+            login ${email}
+            password ${api_key}
+        machine git.heroku.com
+            login ${email}
+            password ${api_key}
+        EOF
+        
+        heroku login
+    
+    - name: Build and push image
+      run: |
+        docker --help
+        
+
+   
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+        with:
+          repository: tassapp/k8-orchestrator
+          ref: refs/heads/master
+          token: ${{ secrets.GITHUB_ACCESS_TOKEN }}
+                
+      - name: Install aws cli
+        uses: chrislennon/action-aws-cli@v1.1
+      
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Install kubectl
+        run: |
+          sudo apt-get update && sudo apt-get install -y apt-transport-https
+          curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
+          echo "deb https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee -a /etc/apt/sources.list.d/kubernetes.list
+          sudo apt-get update
+          sudo apt-get install -y kubectl
+          
+      - name: Kubeconfig
+        run: |
+          aws eks --region us-east-1 update-kubeconfig --name tassapp-cluster
+          export KUBECONFIG=$KUBECONFIG:/home/runner/.kube/config
+          
+      - name: Install Helm
+        run: |
+          curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash -s -- --version v3.0.2
+          helm repo add stable https://kubernetes-charts.storage.googleapis.com/
+        
+      - name: Helm upgrade help
+        run: helm version
+      
+      - name: Upgrade
+        run: helm -n tassapp-production upgrade --reuse-values --debug backend /home/runner/work/Authentication-service/k8-orchestrator/production/backend/ --set auth.image.tag=${{ secrets.IMAGE_TAG }}
