@@ -7,6 +7,7 @@ const sequelize = new Sequelize(config);
 
 const db = {
   message: sequelize.import('./message'),
+  user: sequelize.import('./user'),
   Sequelize,
 };
 
