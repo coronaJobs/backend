@@ -7,6 +7,7 @@ const sequelize = new Sequelize(config);
 
 const db = {
   user: sequelize.import('./user'),
+  role: sequelize.import('/role'),
   Sequelize,
 };
 
