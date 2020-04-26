@@ -3,10 +3,12 @@
 
 // Import type definition for each entity
 const userDef = require('./models/user');
+const roleDef = require('./models/role')
 
 // Strings concatenation
 const typesDefs = 
-userDef// +
+userDef +
+roleDef// +
 // someDef;
 
 // Import mutations for each entity
