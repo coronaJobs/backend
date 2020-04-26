@@ -1,5 +1,9 @@
 'use strict';
 
+const bcrypt = require('bcryptjs');
+
+const salt = bcrypt.genSaltSync(Number(process.env.PASSWORD_SALT));
+
 module.exports = {
   up: queryInterface => {
     return queryInterface.bulkInsert(
@@ -12,6 +16,7 @@ module.exports = {
           phone: '8675463',
           address: 'San Pablo 4332',
           roleId: 1,
+          password: bcrypt.hashSync('123123', salt),
           /*
           profilePicture: '',
           resumeUrl: '',
@@ -26,6 +31,7 @@ module.exports = {
           phone: '8641463',
           address: 'San Telmo 4577',
           roleId: 2,
+          password: bcrypt.hashSync('123123', salt),
           /*
           profilePicture: '',
           resumeUrl: '',

@@ -13,11 +13,13 @@ roleDef// +
 
 // Import mutations for each entity
 const usersMutations = require('./mutations/user');
+const authMutations = require('./mutations/auth');
 
 // Strings concatenation
 const mutationsDefs =
   'type Mutation {' +
   usersMutations +
+  authMutations +
   '}';
 
 // Import queries for each entity
