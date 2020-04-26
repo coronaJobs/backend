@@ -1,5 +1,6 @@
 const message = require('./message');
 const user = require('./user');
+const auth = require('./auth');
 
 // Import all the resolvers
 const resolvers = {
@@ -20,6 +21,7 @@ Object.assign(
   resolvers.Mutation,
   message.Mutation,
   user.Mutation,
+  auth.Mutation,
 );
 
 // Assign the subscriptions to the specific object
