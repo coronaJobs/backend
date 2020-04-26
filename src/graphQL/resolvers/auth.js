@@ -39,5 +39,16 @@ module.exports = {
         return token;
 
       },
+      logout: async (_, params, ctx) => {
+        if (!ctx.auth) {
+            throw new AuthenticationError('Not authenticated')
+          }
+          try {
+            db.blacklist.create({ token: ctx.token })
+            return true
+          } catch (error) {
+            throw new ApolloError('Unexpected error', 500);
+          }
+    },
   },
 };
