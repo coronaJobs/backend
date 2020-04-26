@@ -6,7 +6,9 @@ const usersMutations = `
                 phone: String!,
                 address: String!,
                 profilePicture: String,
-                resumeUrl: String): User
+                resumeUrl: String,
+                roleId: Int!,
+    ): User
 `;
 
 module.exports = usersMutations;
