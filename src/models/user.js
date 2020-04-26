@@ -10,5 +10,10 @@ module.exports = (sequelize, DataTypes) => {
       resumeUrl: DataTypes.STRING,
       active: {type: DataTypes.BOOLEAN, defaultValue: true},
     });
+
+    user.associate = (models) => {
+      user.belongsTo(models.role)
+    }
+
     return user;
   };
