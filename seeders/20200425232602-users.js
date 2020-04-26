@@ -11,6 +11,7 @@ module.exports = {
           mail: 'rcorona@coronajobs.com',
           phone: '8675463',
           address: 'San Pablo 4332',
+          roleId: 1,
           /*
           profilePicture: '',
           resumeUrl: '',
@@ -24,6 +25,7 @@ module.exports = {
           mail: 'kimberley@coronajobs.com',
           phone: '8641463',
           address: 'San Telmo 4577',
+          roleId: 2,
           /*
           profilePicture: '',
           resumeUrl: '',
