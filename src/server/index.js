@@ -54,13 +54,13 @@ const app = new ApolloServer({
 
         if (!user) throw new AuthenticationError('Invalid Token');
 
-        // if (
-        //   await db.blacklist.count({
-        //     where: { token: req.headers.authorization },
-        //   })
-        // ) {
-        //   throw new AuthenticationError('Invalid Token');
-        // }
+        if (
+          await db.blacklist.count({
+            where: { token: req.headers.authorization },
+          })
+        ) {
+          throw new AuthenticationError('Invalid Token');
+        }
 
         // The token passed all the validations
         finalContext = {
