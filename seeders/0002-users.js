@@ -39,7 +39,7 @@ module.exports = {
   down: async queryInterface => {
     await queryInterface.bulkDelete('users', null, {});
     await queryInterface.sequelize.query(
-      'alter sequence messages_id_seq restart with 1;'
+      'alter sequence users_id_seq restart with 1;'
     );
   },
 };
