@@ -4,6 +4,7 @@ type Post {
     name: String!
     description: String!
     applicantLimit: Int!
+    ownerId: Int!
 }
 `;
 

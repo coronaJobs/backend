@@ -1,5 +1,6 @@
 const message = require('./message');
 const user = require('./user');
+const post = require('./post');
 
 // Import all the resolvers
 const resolvers = {
@@ -13,6 +14,7 @@ Object.assign(
   resolvers.Query,
   message.Query,
   user.Query,
+  post.Query,
 );
 
 // Assign the mutations to the specific object

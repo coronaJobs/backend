@@ -15,7 +15,6 @@ module.exports = {
   Mutation: {
       createUser: async (_, params, ctx) => {
         // check auth!!
-        console.log(params)
         // get params
 
         /*
@@ -34,7 +33,6 @@ module.exports = {
 
         // create
         const newUser = await db.user.create(params)
-        console.log(newUser)
         return newUser
       },
   },
