@@ -38,7 +38,7 @@ module.exports = {
   },
   User: {
     role: async (user) => {
-      user.getRole({
+      return await user.getRole({
         where: {
           active: true
         }

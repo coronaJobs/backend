@@ -5,6 +5,7 @@ const auth = require('./auth');
 const resolvers = {
   Query: {},
   Mutation: {},
+  User: user.User,
   // Subscription: {},
 };
 
