@@ -16,12 +16,14 @@ postDef// +
 // Import mutations for each entity
 const messagesMutations = require('./mutations/message');
 const usersMutations = require('./mutations/user');
+const postsMutations = require('./mutations/post');
 
 // Strings concatenation
 const mutationsDefs =
   'type Mutation {' +
   messagesMutations +
   usersMutations +
+  postsMutations +
   '}';
 
 // Import queries for each entity

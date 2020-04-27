@@ -23,6 +23,7 @@ Object.assign(
   resolvers.Mutation,
   message.Mutation,
   user.Mutation,
+  post.Mutation,
 );
 
 // Assign the subscriptions to the specific object

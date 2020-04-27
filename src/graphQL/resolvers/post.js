@@ -9,9 +9,15 @@ module.exports = {
     },
   },
 
+  Mutation: {
+    createPost: async (_, params, ctx) => {
+      const newPost = await db.post.create(params)
+      return newPost
+    },
+},
+
   Post: {
     owner: async (post, params, ctx) => {
-        console.log(post)
         return await post.getOwner()
       },
   },

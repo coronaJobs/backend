@@ -5,7 +5,6 @@ module.exports = (sequelize, DataTypes) => {
       description: DataTypes.STRING,
       applicantLimit: DataTypes.INTEGER,
       active: {type: DataTypes.BOOLEAN, defaultValue: true},
-      //ownerId: DataTypes.INTEGER,
     });
 
     post.associate = models => {
