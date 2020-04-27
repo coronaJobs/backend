@@ -10,6 +10,10 @@ module.exports = {
       // get
       return await db.user.findAll()
     },
+
+    getUser: async (_, { id }, ctx) => {
+      return db.user.findByPk(id)
+    }
   },
 
   Mutation: {

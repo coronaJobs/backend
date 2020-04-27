@@ -1,5 +1,5 @@
 const postsQueries = `
-    getPosts: [Post]
+    getAllPosts: [Post]
 `;
 
 module.exports = postsQueries;

@@ -6,6 +6,7 @@ const post = require('./post');
 const resolvers = {
   Query: {},
   Mutation: {},
+  Post: post.Post,
   // Subscription: {},
 };
 

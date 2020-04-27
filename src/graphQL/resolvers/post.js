@@ -4,13 +4,16 @@ module.exports = {
   Subscription: {},
 
   Query: {
-    getPosts: async (_, params, ctx) => {
-      // check auth!!
-      
-      // get
-      return await db.post.findAll()
+    getAllPosts: async (_, params, ctx) => {
+        return await db.post.findAll(params)
     },
   },
 
+  Post: {
+    owner: async (post, params, ctx) => {
+        console.log(post)
+        return await post.getOwner()
+      },
+  },
   
 };
