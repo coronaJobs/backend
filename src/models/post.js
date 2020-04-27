@@ -1,11 +1,18 @@
 'use strict'
 module.exports = (sequelize, DataTypes) => {
-    const user = sequelize.define('post', {
+    const post = sequelize.define('post', {
       name: DataTypes.STRING,
       description: DataTypes.STRING,
       applicantLimit: DataTypes.INTEGER,
       active: {type: DataTypes.BOOLEAN, defaultValue: true},
-      ownerId: DataTypes.INTEGER,
+      //ownerId: DataTypes.INTEGER,
     });
-    return user;
+
+    post.associate = models => {
+      post.belongsTo(models.user, {
+        foreignKey: 'ownerId',
+        as: 'owner'});
+    };
+
+    return post;
   };
