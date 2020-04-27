@@ -4,11 +4,13 @@
 // Import type definition for each entity
 const messageDef = require('./models/message');
 const userDef = require('./models/user');
+const postDef = require('./models/post');
 
 // Strings concatenation
 const typesDefs = 
 messageDef +
-userDef// +
+userDef +
+postDef// +
 // someDef;
 
 // Import mutations for each entity
