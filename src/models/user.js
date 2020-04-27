@@ -23,16 +23,15 @@ module.exports = (sequelize, DataTypes) => {
       active: {type: DataTypes.BOOLEAN, defaultValue: true},
     });
 
+    user.associate = (models) => {
+      user.belongsTo(models.role)
+    }
     user.beforeUpdate(buildPasswordHash);
     user.beforeCreate(buildPasswordHash);
 
     user.prototype.checkPassword = function checkPassword(password) {
       return bcrypt.compare(password, this.password);
     };
-
-    // user.associate = models => {
-    //   user.belongsTo(models.someModel);
-    // };
 
     return user;
   };

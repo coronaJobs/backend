@@ -1,4 +1,3 @@
-const message = require('./message');
 const user = require('./user');
 const auth = require('./auth');
 
@@ -6,20 +5,19 @@ const auth = require('./auth');
 const resolvers = {
   Query: {},
   Mutation: {},
+  User: user.User,
   // Subscription: {},
 };
 
 // Assign the queries to the specific object
 Object.assign(
   resolvers.Query,
-  message.Query,
   user.Query,
 );
 
 // Assign the mutations to the specific object
 Object.assign(
   resolvers.Mutation,
-  message.Mutation,
   user.Mutation,
   auth.Mutation,
 );
@@ -27,7 +25,6 @@ Object.assign(
 // Assign the subscriptions to the specific object
 // Object.assign(
 //   resolvers.Subscription,
-//   message.Subscription,
 // );
 
 module.exports = resolvers;
