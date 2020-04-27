@@ -27,7 +27,7 @@ module.exports = {
   down: async queryInterface => {
     await queryInterface.bulkDelete('roles', null, {});
     await queryInterface.sequelize.query(
-      'alter sequence messages_id_seq restart with 1;'
+      'alter sequence roles_id_seq restart with 1;'
     );
   },
 };
