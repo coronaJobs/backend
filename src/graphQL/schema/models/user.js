@@ -9,6 +9,7 @@ type User {
     profilePicture: String
     resumeUrl: String
     posts: [Post]
+    role: Role!
 }
 `;
 

@@ -32,7 +32,14 @@ module.exports = {
 
   User: {
     posts: async (user, params, ctx) => {
-        return await user.getPosts()
+      return await user.getPosts()
+    },
+    role: async (user) => {
+      return await user.getRole({
+        where: {
+          active: true
+        }
+      })
     },
   },
 };

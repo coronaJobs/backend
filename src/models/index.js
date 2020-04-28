@@ -6,9 +6,10 @@ const sequelize = new Sequelize(config);
 // import every model and setup database
 
 const db = {
-  message: sequelize.import('./message'),
   user: sequelize.import('./user'),
   post: sequelize.import('./post'),
+  role: sequelize.import('./role'),
+  blacklist: sequelize.import('./blacklist'),
   Sequelize,
 };
 

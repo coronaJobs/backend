@@ -3,10 +3,13 @@ const usersMutations = `
         rut: String!,
         name: String!,
         mail: String!,
+        password: String!,
         phone: String!,
         address: String!,
         profilePicture: String,
-        resumeUrl: String): User
+        resumeUrl: String,
+        roleId: Int!,
+    ): User
 `;
 
 module.exports = usersMutations;

@@ -1,6 +1,6 @@
 // Services are made to use external services, like APIs
 
 // require all services
-// const { functionName } = require('./some-service')
+const { cleanBlacklist } = require('./cleanBlacklist')
 
-// module.exports = { functionName }
+module.exports = { cleanBlacklist }

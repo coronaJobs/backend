@@ -39,6 +39,10 @@ jobs:
     - name: Heroku registry login
       run: |
         heroku container:login
+        
+    - name: Clean registry
+      run: |
+        heroku container:rm web release --app=api-corona-jobs-staging
       
     - name: Build and push image
       run: |
