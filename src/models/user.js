@@ -11,27 +11,30 @@ async function buildPasswordHash(instance) {
 }
 
 module.exports = (sequelize, DataTypes) => {
-    const user = sequelize.define('user', {
-      rut: DataTypes.INTEGER,
-      name: DataTypes.STRING,
-      mail: DataTypes.STRING,
-      phone: DataTypes.STRING,
-      password: DataTypes.STRING,
-      address: DataTypes.STRING,
-      profilePicture: DataTypes.STRING,
-      resumeUrl: DataTypes.STRING,
-      active: {type: DataTypes.BOOLEAN, defaultValue: true},
-    });
+  const user = sequelize.define('user', {
+    rut: DataTypes.STRING,
+    name: DataTypes.STRING,
+    mail: DataTypes.STRING,
+    phone: DataTypes.STRING,
+    password: DataTypes.STRING,
+    address: DataTypes.STRING,
+    profilePicture: DataTypes.STRING,
+    resumeUrl: DataTypes.STRING,
+    active: {type: DataTypes.BOOLEAN, defaultValue: true},
+  });
 
-    user.associate = (models) => {
-      user.belongsTo(models.role)
-    }
-    user.beforeUpdate(buildPasswordHash);
-    user.beforeCreate(buildPasswordHash);
+  user.associate = (models) => {
+    user.belongsTo(models.role);
+    user.hasMany(models.post, {
+      foreignKey: 'ownerId',
+      as: 'posts'});
+  }
+  user.beforeUpdate(buildPasswordHash);
+  user.beforeCreate(buildPasswordHash);
 
-    user.prototype.checkPassword = function checkPassword(password) {
-      return bcrypt.compare(password, this.password);
-    };
-
-    return user;
+  user.prototype.checkPassword = function checkPassword(password) {
+    return bcrypt.compare(password, this.password);
   };
+
+  return user;
+};

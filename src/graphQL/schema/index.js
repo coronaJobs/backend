@@ -3,32 +3,39 @@
 
 // Import type definition for each entity
 const userDef = require('./models/user');
-const roleDef = require('./models/role')
+const postDef = require('./models/post');
+const roleDef = require('./models/role');
+
 
 // Strings concatenation
 const typesDefs = 
 userDef +
-roleDef// +
+postDef +
+roleDef // +
 // someDef;
 
 // Import mutations for each entity
 const usersMutations = require('./mutations/user');
+const postsMutations = require('./mutations/post');
 const authMutations = require('./mutations/auth');
 
 // Strings concatenation
 const mutationsDefs =
   'type Mutation {' +
   usersMutations +
+  postsMutations +
   authMutations +
   '}';
 
 // Import queries for each entity
 const usersQueries = require('./queries/user');
+const postsQueries = require('./queries/post');
 
 // Strings concatenation
 const queriesDefs =
   'type Query {' +
   usersQueries +
+  postsQueries +
   '}';
 
 // Define the schema as the concatenation of Defs, Subscriptions, Queries and Mutations

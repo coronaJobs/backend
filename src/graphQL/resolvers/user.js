@@ -10,39 +10,36 @@ module.exports = {
       // get
       return await db.user.findAll()
     },
+
+    getUser: async (_, { id }, ctx) => {
+      return db.user.findByPk(id)
+    }
   },
 
   Mutation: {
-      createUser: async (_, params, ctx) => {
-        // check auth!!
-        // get params
+    createUser: async (_, params, ctx) => {
+      // check auth!!
+      // get params
 
-        /*
-        const {
-          rut,
-          name,
-          mail,
-          phone,
-          address,
-          profilePicture
-        } = params
-        */
+      // validate params
+      // you can use validator js library
 
-        // validate params
-        // you can use validator js library
-
-        // create
-        const newUser = await db.user.create(params)
-        return newUser
-      },
+      // create
+      const newUser = await db.user.create(params)
+      return newUser
+    },
   },
+
   User: {
+    posts: async (user, params, ctx) => {
+      return await user.getPosts()
+    },
     role: async (user) => {
       return await user.getRole({
         where: {
           active: true
         }
       })
-    }
-  }
+    },
+  },
 };
