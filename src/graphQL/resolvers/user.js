@@ -21,17 +21,6 @@ module.exports = {
       // check auth!!
       // get params
 
-      /*
-      const {
-        rut,
-        name,
-        mail,
-        phone,
-        address,
-        profilePicture
-      } = params
-      */
-
       // validate params
       // you can use validator js library
 
