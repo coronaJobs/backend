@@ -14,12 +14,12 @@ module.exports = {
       const newPost = await db.post.create(params)
       return newPost
     },
-},
+  },
 
   Post: {
     owner: async (post, params, ctx) => {
         return await post.getOwner()
-      },
+    },
   },
   
 };

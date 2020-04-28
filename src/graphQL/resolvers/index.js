@@ -7,6 +7,7 @@ const resolvers = {
   Query: {},
   Mutation: {},
   Post: post.Post,
+  User: user.User,
   // Subscription: {},
 };
 
