@@ -5,6 +5,7 @@ type Post {
     description: String!
     applicantLimit: Int!
     owner: User!
+    state: PostState!
 }
 `;
 

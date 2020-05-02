@@ -7,8 +7,11 @@ module.exports = (sequelize, DataTypes) => {
     });
 
     postState.associate = (models) => {
-        postState.hasMany(models.post);
-      };
+      postState.hasMany(models.post, {
+        foreignKey: 'stateId',
+        as: 'posts'
+      });
+    };
 
     return postState;
   };

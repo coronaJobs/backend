@@ -17,9 +17,12 @@ module.exports = {
   },
 
   Post: {
-    owner: async (post, params, ctx) => {
+    owner: async (post) => {
         return await post.getOwner()
     },
+    state: async (post) => {
+      return await post.getState()
+  },
   },
   
 };
