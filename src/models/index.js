@@ -10,6 +10,7 @@ const db = {
   post: sequelize.import('./post'),
   role: sequelize.import('./role'),
   blacklist: sequelize.import('./blacklist'),
+  postState: sequelize.import('./postState'),
   Sequelize,
 };
 
