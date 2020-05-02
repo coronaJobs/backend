@@ -1,6 +1,7 @@
 const user = require('./user');
 const post = require('./post');
 const auth = require('./auth');
+const postState = require('./postState');
 
 // Import all the resolvers
 const resolvers = {
@@ -8,6 +9,7 @@ const resolvers = {
   Mutation: {},
   Post: post.Post,
   User: user.User,
+  PostState: postState.PostState,
   // Subscription: {},
 };
 
@@ -16,6 +18,7 @@ Object.assign(
   resolvers.Query,
   user.Query,
   post.Query,
+  postState.Query,
 );
 
 // Assign the mutations to the specific object

@@ -41,7 +41,7 @@ module.exports = {
   down: async queryInterface => {
     await queryInterface.bulkDelete('postStates', null, {});
     await queryInterface.sequelize.query(
-      'alter sequence postStates_id_seq restart with 1;'
+      'alter sequence "postStates_id_seq" restart with 1;'
     );
   },
 };

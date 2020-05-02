@@ -31,7 +31,7 @@ module.exports = {
   },
 
   User: {
-    posts: async (user, params, ctx) => {
+    posts: async (user) => {
       return await user.getPosts()
     },
     role: async (user) => {

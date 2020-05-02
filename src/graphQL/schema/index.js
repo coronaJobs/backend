@@ -32,12 +32,14 @@ const mutationsDefs =
 // Import queries for each entity
 const usersQueries = require('./queries/user');
 const postsQueries = require('./queries/post');
+const postStatesQueries = require('./queries/postState');
 
 // Strings concatenation
 const queriesDefs =
   'type Query {' +
   usersQueries +
   postsQueries +
+  postStatesQueries +
   '}';
 
 // Define the schema as the concatenation of Defs, Subscriptions, Queries and Mutations

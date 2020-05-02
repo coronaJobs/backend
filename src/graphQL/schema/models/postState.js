@@ -3,6 +3,7 @@ type PostState {
     id: Int!
     name: String!
     description: String!
+    posts: [Post]
 }
 `;
 
