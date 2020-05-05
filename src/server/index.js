@@ -17,8 +17,8 @@ const app = new ApolloServer({
       resolve()
     });
   },
-  playground: process.env.PLAYGROUND,
-  introspection: process.env.INTROSPECTION,
+  playground: true,
+  introspection: true,
   cors: {
     origin: '*'
   },
