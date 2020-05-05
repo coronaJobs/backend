@@ -5,13 +5,15 @@
 const userDef = require('./models/user');
 const postDef = require('./models/post');
 const roleDef = require('./models/role');
+const postStateDef = require('./models/postState');
 
 
 // Strings concatenation
 const typesDefs = 
 userDef +
 postDef +
-roleDef // +
+roleDef +
+postStateDef// +
 // someDef;
 
 // Import mutations for each entity
@@ -30,12 +32,14 @@ const mutationsDefs =
 // Import queries for each entity
 const usersQueries = require('./queries/user');
 const postsQueries = require('./queries/post');
+const postStatesQueries = require('./queries/postState');
 
 // Strings concatenation
 const queriesDefs =
   'type Query {' +
   usersQueries +
   postsQueries +
+  postStatesQueries +
   '}';
 
 // Define the schema as the concatenation of Defs, Subscriptions, Queries and Mutations
