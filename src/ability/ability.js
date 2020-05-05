@@ -9,7 +9,7 @@ class Ability {
             this.ability[entity.getTableName()] = {}
         }
 
-        this.ability[entity.getTableName()][action] = {filter}
+        this.ability[entity.getTableName()][action] = filter
         
     }
 
@@ -18,10 +18,10 @@ class Ability {
     }
 
     async can(entity, action, filterParams=undefined) {
-        if (this.ability[entity.getTableName()]) {
-            if(this.ability[entity.getTableName()][action]) {
-                return await this.ability[entity.getTableName()][action].filter(filterParams)
-            }
+        table = this.ability[entity.getTableName()]
+        entityAction = table ? table[action] : none
+        if(entityAction) {
+            return await entityAction(filterParams)
         }
         return false
     }
