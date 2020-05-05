@@ -2,14 +2,14 @@
 
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('messages', {
+    return queryInterface.createTable('blacklists', {
       id: {
         type: Sequelize.INTEGER,
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
       },
-      data: {
+      token: {
         type: Sequelize.STRING,
         allowNull: false,
       },
@@ -21,7 +21,8 @@ module.exports = {
       },
     });
   },
-  down: queryInterface => {
-    return queryInterface.dropTable('messages');
-  },
+
+  down: (queryInterface, Sequelize) => {
+    return queryInterface.dropTable('blacklists');
+  }
 };

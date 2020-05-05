@@ -1,9 +1,12 @@
 const { 
     ApolloServer,
+    AuthenticationError,
    } = require('apollo-server');
 const resolvers = require('../graphQL/resolvers/index');
 const typeDefs = require('../graphQL/schema');
 const { db } = require('./../models');
+const jwt = require('jsonwebtoken');
+
   
 const app = new ApolloServer({
   typeDefs,
@@ -14,7 +17,8 @@ const app = new ApolloServer({
       resolve()
     });
   },
-  playground: process.env.PLAYGROUND,
+  playground: true,
+  introspection: true,
   cors: {
     origin: '*'
   },
@@ -28,14 +32,46 @@ const app = new ApolloServer({
     return err;
   },
   context: async ({ req, connection }) => {
-    let finalContext = {}
-    // check if user is authenticated. To access headers use req.headers.headername
-    // if authenticated (valid token and not in balcklist), get user and save currentUser into finalContext
-    // if not, set this
+    let finalContext;
     
-    finalContext = { currentUser: null, auth: false, token: null, refreshToken: null };
+    if (connection) finalContext = connection.context;
+    else {
+      if (!req.headers.authorization)
+        finalContext = { currentUser: null, auth: false, token: null };
+      else {
+        const user = await jwt.verify(
+          req.headers.authorization,
+          process.env.JWT_KEY,
+          async (err, res) => {
+            if (err) {
+              throw new AuthenticationError('Invalid Token');
+            } else {
+              return await db.user.findOne({
+                where: { id: res.id, active: true },
+              });
+            }
+          }
+        );
 
-    // add connection logic for subscriptions
+        if (!user) throw new AuthenticationError('Invalid Token');
+
+        if (
+          await db.blacklist.count({
+            where: { token: req.headers.authorization },
+          })
+        ) {
+          throw new AuthenticationError('Invalid Token');
+        }
+
+        // The token passed all the validations
+        finalContext = {
+          currentUser: user,
+          auth: true,
+          token: req.headers.authorization,
+        };
+      }
+    }
+
     return finalContext;
   },
 });
