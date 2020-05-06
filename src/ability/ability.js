@@ -18,8 +18,8 @@ class Ability {
     }
 
     async can(entity, action, filterParams=undefined) {
-        table = this.ability[entity.getTableName()]
-        entityAction = table ? table[action] : none
+        const table = this.ability[entity.getTableName()]
+        const entityAction = table ? table[action] : none
         if(entityAction) {
             return await entityAction(filterParams)
         }
