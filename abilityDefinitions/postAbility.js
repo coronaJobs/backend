@@ -1,4 +1,4 @@
-const { db } = require('./../../models')
+const { db } = require('./../src/models')
 
 const postAbility = (ability, user) => {
     if (user) {
