@@ -12,7 +12,7 @@ module.exports = {
     },
 
     getUser: async (_, { id }, ctx) => {
-      return db.user.findByPk(id)
+      return await db.user.findByPk(id)
     }
   },
 
@@ -27,6 +27,17 @@ module.exports = {
       // create
       const newUser = await db.user.create(params)
       return newUser
+    },
+
+    editUser: async (_, params, ctx) => {
+      // check auth!!
+      // get params
+
+      // validate params
+      // you can use validator js library
+
+      const editedUser = await db.user.update(params)
+      return editedUser
     },
   },
 
