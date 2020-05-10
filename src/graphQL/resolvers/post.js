@@ -11,6 +11,7 @@ module.exports = {
 
   Mutation: {
     createPost: async (_, params, ctx) => {
+      params['stateId'] = 1
       const newPost = await db.post.create(params)
       return newPost
     },
