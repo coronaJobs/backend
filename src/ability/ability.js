@@ -10,7 +10,7 @@ class Ability {
         }
 
         this.ability[entity.getTableName()][action] = filter
-        
+
     }
 
     getAbilities () {
@@ -19,7 +19,7 @@ class Ability {
 
     async can(entity, action, filterParams=undefined) {
         const table = this.ability[entity.getTableName()]
-        const entityAction = table ? table[action] : none
+        const entityAction = table ? table[action] : null
         if(entityAction) {
             return await entityAction(filterParams)
         }
