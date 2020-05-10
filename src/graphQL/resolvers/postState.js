@@ -5,7 +5,7 @@ module.exports = {
 
   Query: {
     getAllPostStates: async (_, params, ctx) => {
-        return await db.postState.findAll(params)
+      return await db.postState.findAll(params)
     },
   },
 
