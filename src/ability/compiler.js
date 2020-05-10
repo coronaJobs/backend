@@ -28,12 +28,13 @@ const getDefinitions = () => {
 
 const compiler = (user) => {
     const definitions = getDefinitions()
+    
 
     const ability = new Ability(user)
 
-    Object.values(definitions).forEach((def) => {
+    for (const def of Object.values(definitions)) {
         def(ability, user)
-    })
+    }
     
     return ability
 }

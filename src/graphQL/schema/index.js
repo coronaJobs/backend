@@ -6,6 +6,7 @@ const userDef = require('./models/user');
 const postDef = require('./models/post');
 const roleDef = require('./models/role');
 const postStateDef = require('./models/postState');
+const scalarDef = require('./models/scalar')
 
 
 // Strings concatenation
@@ -13,7 +14,8 @@ const typesDefs =
 userDef +
 postDef +
 roleDef +
-postStateDef// +
+postStateDef +
+scalarDef
 // someDef;
 
 // Import mutations for each entity
@@ -33,6 +35,7 @@ const mutationsDefs =
 const usersQueries = require('./queries/user');
 const postsQueries = require('./queries/post');
 const postStatesQueries = require('./queries/postState');
+const canQueries = require('./queries/can')
 
 // Strings concatenation
 const queriesDefs =
@@ -40,6 +43,7 @@ const queriesDefs =
   usersQueries +
   postsQueries +
   postStatesQueries +
+  canQueries +
   '}';
 
 // Define the schema as the concatenation of Defs, Subscriptions, Queries and Mutations

@@ -1,10 +1,13 @@
+const { JSONResolver } = require('graphql-scalars')
 const user = require('./user');
 const post = require('./post');
 const auth = require('./auth');
 const postState = require('./postState');
+const can = require('./can')
 
 // Import all the resolvers
 const resolvers = {
+  JSON: JSONResolver,
   Query: {},
   Mutation: {},
   Post: post.Post,
@@ -19,6 +22,7 @@ Object.assign(
   user.Query,
   post.Query,
   postState.Query,
+  can.Query,
 );
 
 // Assign the mutations to the specific object
