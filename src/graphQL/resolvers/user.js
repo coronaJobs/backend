@@ -1,13 +1,13 @@
 const { db } = require('../../models');
+const {
+    AuthenticationError,
+  } = require('apollo-server');
 
 module.exports = {
   Subscription: {},
 
   Query: {
     getUsers: async (_, params, ctx) => {
-      // check auth!!
-      
-      // get
       return await db.user.findAll()
     },
 
@@ -30,14 +30,21 @@ module.exports = {
     },
 
     editUser: async (_, params, ctx) => {
-      // check auth!!
-      // get params
-
+      if (!ctx.auth) {
+        throw new AuthenticationError('Not authenticated')
+      }
+      if (ctx.currentUser.id != params.id) {
+        throw new AuthenticationError('Not authorized')
+      }
       // validate params
       // you can use validator js library
+      try {
+        const editedUser = await db.user.findByPk(params.id)
+        return await editedUser.update(params)
 
-      const editedUser = await db.user.update(params)
-      return editedUser
+      } catch (error) {
+        throw new ApolloError('Unexpected error', 500);
+      }      
     },
   },
 
