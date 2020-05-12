@@ -35,7 +35,8 @@ const mutationsDefs =
 const usersQueries = require('./queries/user');
 const postsQueries = require('./queries/post');
 const postStatesQueries = require('./queries/postState');
-const canQueries = require('./queries/can')
+const canQueries = require('./queries/can');
+const rolesQueries = require('./queries/roles');
 
 // Strings concatenation
 const queriesDefs =
@@ -44,6 +45,7 @@ const queriesDefs =
   postsQueries +
   postStatesQueries +
   canQueries +
+  rolesQueries +
   '}';
 
 // Define the schema as the concatenation of Defs, Subscriptions, Queries and Mutations
