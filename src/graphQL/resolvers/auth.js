@@ -1,4 +1,5 @@
 const { db } = require('../../models');
+const CryptoJS = require('crypto-js')
 const jwt = require('jsonwebtoken')
 const {
     AuthenticationError,
@@ -25,10 +26,13 @@ module.exports = {
             }
         }
 
-        // create token
+        // //create token
+        
+        const encryptedId = CryptoJS.AES.encrypt(user.id.toString(), process.env.CRYPTO_KEY).toString()
+        
         const token = jwt.sign(
             {
-            id: user.id,
+            id: encryptedId,
             },
             process.env.JWT_KEY,
             {

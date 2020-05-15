@@ -4,6 +4,7 @@ const post = require('./post');
 const auth = require('./auth');
 const postState = require('./postState');
 const can = require('./can')
+const role = require('./role')
 
 // Import all the resolvers
 const resolvers = {
@@ -23,6 +24,7 @@ Object.assign(
   post.Query,
   postState.Query,
   can.Query,
+  role.Query,
 );
 
 // Assign the mutations to the specific object
