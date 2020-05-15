@@ -40,12 +40,13 @@ module.exports = {
         throw new ForbiddenError('Not authorized')
       }
       const { mail, phone } = params;
-      console.log(mail)
+
       if (mail && !validator.isEmail(mail)) {
         throw new ValidationError('Invalid email address')
       }
-      // validate params
-      // you can use validator js library
+      if (phone && !validator.isNumeric(phone)) {
+        throw new ValidationError('Invalid phone number')
+      }
       try {
         const editedUser = await db.user.findByPk(params.id)
         return await editedUser.update(params)
