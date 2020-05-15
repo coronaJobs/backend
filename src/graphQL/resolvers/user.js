@@ -13,7 +13,11 @@ module.exports = {
 
     getUser: async (_, { id }, ctx) => {
       return db.user.findByPk(id)
-    }
+    },
+
+    getCurrentUser: async(_, __, ctx) => {
+      return ctx.currentUser
+    },
   },
 
   Mutation: {
