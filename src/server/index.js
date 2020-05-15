@@ -6,6 +6,7 @@ const resolvers = require('../graphQL/resolvers/index');
 const typeDefs = require('../graphQL/schema');
 const { db } = require('./../models');
 const jwt = require('jsonwebtoken');
+const { setAbility } = require('./../ability')
 
   
 const app = new ApolloServer({
@@ -71,6 +72,8 @@ const app = new ApolloServer({
         };
       }
     }
+
+    finalContext.ability = setAbility(finalContext.currentUser)
 
     return finalContext;
   },
