@@ -1,10 +1,37 @@
 const { db } = require('../../models');
 const {
     AuthenticationError,
-    ValidationError,
+    UserInputError,
     ForbiddenError,
   } = require('apollo-server');
-var validator = require('validator');
+const validator = require('validator');
+const { validateRut,
+        formatRut,
+        RutFormat } = require('@fdograph/rut-utilities');
+
+function validateParameters(params) {
+  const { mail, phone, rut } = params;
+  const validationErrors = {}
+  if (mail && !validator.isEmail(mail)) {
+    validationErrors.mail = 'Invalid email address';
+  }
+  if (phone && !validator.isNumeric(phone)) {
+    validationErrors.phone = 'Invalid phone number';
+  }
+  if (rut && !validateRut(rut)) {
+    validationErrors.rut = 'Invalid rut number';
+  }
+  else if (rut && validateRut(rut)) {
+    params.rut = formatRut(rut, RutFormat.DOTS_DASH);
+  }
+
+  if ((Object.keys(validationErrors)).length) {
+    throw new UserInputError(
+      'Failed to save data due to validation errors',
+      { validationErrors }
+    ); 
+  }
+}
 
 module.exports = {
   Subscription: {},
@@ -23,33 +50,25 @@ module.exports = {
     createUser: async (_, params, ctx) => {
       // check auth!!
       // get params
-
-      // validate params
-      // you can use validator js library
-
-      // create
-      const newUser = await db.user.create(params)
-      return newUser
+      validateParameters(params);
+      try {
+        return await db.user.create(params);
+      } catch (error) {
+        throw new ApolloError('Unexpected error', 500);
+      } 
     },
 
     editUser: async (_, params, ctx) => {
       if (!ctx.auth) {
-        throw new AuthenticationError('Not authenticated')
+        throw new AuthenticationError('Not authenticated');
       }
       if (ctx.currentUser.id != params.id) {
-        throw new ForbiddenError('Not authorized')
+        throw new ForbiddenError('Not authorized');
       }
-      const { mail, phone } = params;
-
-      if (mail && !validator.isEmail(mail)) {
-        throw new ValidationError('Invalid email address')
-      }
-      if (phone && !validator.isNumeric(phone)) {
-        throw new ValidationError('Invalid phone number')
-      }
+      validateParameters(params);
       try {
         const editedUser = await db.user.findByPk(params.id)
-        return await editedUser.update(params)
+        return await editedUser.update(params);
 
       } catch (error) {
         throw new ApolloError('Unexpected error', 500);

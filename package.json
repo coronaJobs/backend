@@ -9,6 +9,7 @@
     "preinstall": "npm i -g sequelize-cli"
   },
   "dependencies": {
+    "@fdograph/rut-utilities": "^1.2.1",
     "apollo-server": "^2.9.16",
     "bcryptjs": "^2.4.3",
     "jsonwebtoken": "^8.5.1",
