@@ -1,7 +1,10 @@
 const { db } = require('../../models');
 const {
     AuthenticationError,
+    ValidationError,
+    ForbiddenError,
   } = require('apollo-server');
+var validator = require('validator');
 
 module.exports = {
   Subscription: {},
@@ -34,7 +37,12 @@ module.exports = {
         throw new AuthenticationError('Not authenticated')
       }
       if (ctx.currentUser.id != params.id) {
-        throw new AuthenticationError('Not authorized')
+        throw new ForbiddenError('Not authorized')
+      }
+      const { mail, phone } = params;
+      console.log(mail)
+      if (mail && !validator.isEmail(mail)) {
+        throw new ValidationError('Invalid email address')
       }
       // validate params
       // you can use validator js library
