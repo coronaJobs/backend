@@ -6,6 +6,8 @@ const resolvers = require('../graphQL/resolvers/index');
 const typeDefs = require('../graphQL/schema');
 const { db } = require('./../models');
 const jwt = require('jsonwebtoken');
+const { setAbility } = require('./../ability')
+const CryptoJS = require('crypto-js')
 
   
 const app = new ApolloServer({
@@ -46,8 +48,9 @@ const app = new ApolloServer({
             if (err) {
               throw new AuthenticationError('Invalid Token');
             } else {
+              const decryptedId = parseInt(CryptoJS.AES.decrypt(res.id, process.env.CRYPTO_KEY).toString(CryptoJS.enc.Utf8), 10)
               return await db.user.findOne({
-                where: { id: res.id, active: true },
+                where: { id: decryptedId, active: true },
               });
             }
           }
@@ -71,6 +74,8 @@ const app = new ApolloServer({
         };
       }
     }
+
+    finalContext.ability = setAbility(finalContext.currentUser)
 
     return finalContext;
   },
