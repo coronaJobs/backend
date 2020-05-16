@@ -21,10 +21,6 @@
     "parse-full-name": "^1.2.4",
     "pg": "^7.11.0",
     "sequelize": "^5.21.2",
-<<<<<<< HEAD
-    "validate.js": "^0.13.1"
-=======
     "validator": "^13.0.0"
->>>>>>> development
   }
 }

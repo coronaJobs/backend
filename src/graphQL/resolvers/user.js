@@ -25,8 +25,6 @@ module.exports = {
 
   Mutation: {
     createUser: async (_, params, ctx) => {
-      // check auth!!
-      // get params
       validateUserParameters(params);
       try {
         return await db.user.create(params);

@@ -7,21 +7,21 @@ const {
 } = require('@fdograph/rut-utilities');
 const parseFullName = require('parse-full-name').parseFullName;
 
-function processMail(params, validationErrors) {
+const processMail = (params, validationErrors) => {
   const { mail } = params;
   if (mail && !validator.isEmail(mail)) {
       validationErrors.mail = 'Invalid email address';
   }
 }
 
-function processPhone(params, validationErrors) {
+const processPhone = (params, validationErrors) => {
   const { phone } = params;
   if (phone && !validator.isNumeric(phone)) {
     validationErrors.phone = 'Invalid phone number';
   }
 }
 
-function processName(params, validationErrors) {
+const processName = (params, validationErrors) => {
   const { name } = params;
   if (name) {
     parsedName = parseFullName(name);
@@ -36,7 +36,7 @@ function processName(params, validationErrors) {
   }
 }
 
-function processRut(params, validationErrors) {
+const processRut = (params, validationErrors) => {
   const { rut } = params;
   if (rut) {
     if (!validateRut(rut)) validationErrors.rut = 'Invalid rut number';
@@ -44,7 +44,7 @@ function processRut(params, validationErrors) {
   }
 }
 
-function validateUserParameters(params) {
+const validateUserParameters = (params) => {
   const validationErrors = {}
   processMail(params, validationErrors);
   processPhone(params, validationErrors);
