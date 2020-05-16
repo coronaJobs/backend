@@ -1,37 +1,10 @@
 const { db } = require('../../models');
 const {
     AuthenticationError,
-    UserInputError,
     ForbiddenError,
+    ApolloError,
   } = require('apollo-server');
-const validator = require('validator');
-const { validateRut,
-        formatRut,
-        RutFormat } = require('@fdograph/rut-utilities');
-
-function validateParameters(params) {
-  const { mail, phone, rut } = params;
-  const validationErrors = {}
-  if (mail && !validator.isEmail(mail)) {
-    validationErrors.mail = 'Invalid email address';
-  }
-  if (phone && !validator.isNumeric(phone)) {
-    validationErrors.phone = 'Invalid phone number';
-  }
-  if (rut && !validateRut(rut)) {
-    validationErrors.rut = 'Invalid rut number';
-  }
-  else if (rut && validateRut(rut)) {
-    params.rut = formatRut(rut, RutFormat.DOTS_DASH);
-  }
-
-  if ((Object.keys(validationErrors)).length) {
-    throw new UserInputError(
-      'Failed to save data due to validation errors',
-      { validationErrors }
-    ); 
-  }
-}
+const { validateUserParameters } = require('../../validations');
 
 module.exports = {
   Subscription: {},
@@ -50,7 +23,7 @@ module.exports = {
     createUser: async (_, params, ctx) => {
       // check auth!!
       // get params
-      validateParameters(params);
+      validateUserParameters(params);
       try {
         return await db.user.create(params);
       } catch (error) {
@@ -65,7 +38,7 @@ module.exports = {
       if (ctx.currentUser.id != params.id) {
         throw new ForbiddenError('Not authorized');
       }
-      validateParameters(params);
+      validateUserParameters(params);
       try {
         const editedUser = await db.user.findByPk(params.id)
         return await editedUser.update(params);
