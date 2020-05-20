@@ -30,7 +30,7 @@ module.exports = (sequelize, DataTypes) => {
       as: 'posts'});
     user.belongsToMany(models.post, {
       through: 'application',
-      as: 'posts',
+      as: 'offers',
       foreignKey: 'applicantId'
     });
   }

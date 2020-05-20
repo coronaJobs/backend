@@ -12,7 +12,7 @@ module.exports = {
         allowNull: false,
         primaryKey: true,
       },
-      postId: {
+      offerId: {
         type: Sequelize.INTEGER,
         references: {
           model: 'posts',
