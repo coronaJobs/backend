@@ -1,4 +1,4 @@
-const { JSONResolver } = require('graphql-scalars')
+const { JSONResolver, DateTimeResolver } = require('graphql-scalars')
 const user = require('./user');
 const post = require('./post');
 const auth = require('./auth');
@@ -9,6 +9,7 @@ const role = require('./role')
 // Import all the resolvers
 const resolvers = {
   JSON: JSONResolver,
+  DateTime: DateTimeResolver,
   Query: {},
   Mutation: {},
   Post: post.Post,
