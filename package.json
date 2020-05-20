@@ -16,6 +16,7 @@
     "glob": "^7.1.6",
     "graphql-scalars": "^1.1.2",
     "jsonwebtoken": "^8.5.1",
+    "luxon": "^1.24.1",
     "node-schedule": "^1.3.2",
     "nodemon": "^2.0.2",
     "parse-full-name": "^1.2.4",
