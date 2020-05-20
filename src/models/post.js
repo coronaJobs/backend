@@ -16,6 +16,11 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'stateId',
         as: 'state'
       });
+      post.belongsToMany(models.user, {
+        through: 'application',
+        as: 'applicants',
+        foreignKey: 'postId'
+      });
     };
 
     return post;
