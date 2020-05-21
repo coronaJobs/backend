@@ -5,7 +5,7 @@ const {
 
 const userAbility = (ability, currentUser) => {
     if (currentUser) {
-        ability.creteAbility(db.user, 'update', async(params) => {
+        ability.createAbility(db.user, 'update', async(params) => {
             const { user } = params
 
             // validations
@@ -14,7 +14,7 @@ const userAbility = (ability, currentUser) => {
             return currentUser.id == user.id
         })
 
-        ability.creteAbility(db.user, 'delete', async(params) => {
+        ability.createAbility(db.user, 'delete', async(params) => {
             const { user } = params
 
             // validations
@@ -25,3 +25,5 @@ const userAbility = (ability, currentUser) => {
 
     }
 }
+
+module.exports = { userAbility }
