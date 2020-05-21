@@ -6,6 +6,7 @@ type Post {
     applicantLimit: Int!
     owner: User!
     state: PostState!
+    createdAt: DateTime
 }
 `;
 

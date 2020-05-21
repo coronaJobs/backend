@@ -1,18 +1,21 @@
 const { db } = require('../../models');
+const {
+    AuthenticationError,
+    ForbiddenError,
+    ApolloError,
+  } = require('apollo-server');
+const { validateUserParameters } = require('../../validations');
 
 module.exports = {
   Subscription: {},
 
   Query: {
     getUsers: async (_, params, ctx) => {
-      // check auth!!
-      
-      // get
       return await db.user.findAll()
     },
 
     getUser: async (_, { id }, ctx) => {
-      return db.user.findByPk(id)
+      return await db.user.findByPk(id)
     },
 
     getCurrentUser: async(_, __, ctx) => {
@@ -22,15 +25,29 @@ module.exports = {
 
   Mutation: {
     createUser: async (_, params, ctx) => {
-      // check auth!!
-      // get params
+      validateUserParameters(params);
+      try {
+        return await db.user.create(params);
+      } catch (error) {
+        throw new ApolloError('Unexpected error', 500);
+      } 
+    },
 
-      // validate params
-      // you can use validator js library
+    editUser: async (_, params, ctx) => {
+      if (!ctx.auth) {
+        throw new AuthenticationError('Not authenticated');
+      }
+      if (ctx.currentUser.id != params.id) {
+        throw new ForbiddenError('Not authorized');
+      }
+      validateUserParameters(params);
+      try {
+        const editedUser = await db.user.findByPk(params.id)
+        return await editedUser.update(params);
 
-      // create
-      const newUser = await db.user.create(params)
-      return newUser
+      } catch (error) {
+        throw new ApolloError('Unexpected error', 500);
+      }      
     },
   },
 
