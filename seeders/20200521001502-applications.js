@@ -7,7 +7,7 @@ module.exports = {
       [
         {
           applicantId: 1,
-          offerId: 1,
+          offerId: 2,
           createdAt: '2020-05-20 20:30:46.847+00',
           updatedAt: '2020-05-20 20:30:46.847+00',
         },

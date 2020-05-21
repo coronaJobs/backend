@@ -10,6 +10,7 @@ type User {
     resumeUrl: String
     posts: [Post]
     role: Role!
+    applications: [Post]
 }
 `;
 
