@@ -1,33 +1,34 @@
-'use strict';
+"use strict";
 
 module.exports = {
-  up: queryInterface => {
+  up: (queryInterface) => {
     return queryInterface.bulkInsert(
-      'roles',
+      "roles",
       [
         {
-          name: 'employer',
-          description: 'employer is the person or institution that employs other people',
+          name: "employer",
+          description:
+            "employer is the person or institution that employs other people",
           active: true,
-          createdAt: '2020-04-25 13:17:36.847+00',
-          updatedAt: '2020-04-25 13:17:36.847+00',
+          createdAt: "2020-04-25 13:17:36.847+00",
+          updatedAt: "2020-04-25 13:17:36.847+00",
         },
         {
-          name: 'employee',
-          description: 'employee is the person that works for employers',
+          name: "employee",
+          description: "employee is the person that works for employers",
           active: true,
-          createdAt: '2020-04-25 13:17:36.847+00',
-          updatedAt: '2020-04-25 13:17:36.847+00',
+          createdAt: "2020-04-25 13:17:36.847+00",
+          updatedAt: "2020-04-25 13:17:36.847+00",
         },
       ],
       {}
     );
   },
 
-  down: async queryInterface => {
-    await queryInterface.bulkDelete('roles', null, {});
+  down: async (queryInterface) => {
+    await queryInterface.bulkDelete("roles", null, {});
     await queryInterface.sequelize.query(
-      'alter sequence roles_id_seq restart with 1;'
+      "alter sequence roles_id_seq restart with 1;"
     );
   },
 };

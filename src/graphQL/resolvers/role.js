@@ -1,11 +1,11 @@
-const { db } = require('../../models');
+const { db } = require("../../models");
 
 module.exports = {
-    Subscription: {},
+  Subscription: {},
 
-    Query: {
-        getRoles: async (_, params, ctx) => {
-            return await db.role.findAll()
-        },
+  Query: {
+    getRoles: async (_, params, ctx) => {
+      return await db.role.findAll();
     },
+  },
 };

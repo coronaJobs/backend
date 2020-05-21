@@ -1,8 +1,8 @@
-'use strict';
+"use strict";
 
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('posts', {
+    return queryInterface.createTable("posts", {
       id: {
         type: Sequelize.INTEGER,
         allowNull: false,
@@ -28,10 +28,10 @@ module.exports = {
       ownerId: {
         type: Sequelize.INTEGER,
         references: {
-          model: 'users',
-          key: 'id'
+          model: "users",
+          key: "id",
         },
-        allowNull: false
+        allowNull: false,
       },
       createdAt: {
         type: Sequelize.DATE,
@@ -42,7 +42,7 @@ module.exports = {
     });
   },
 
-  down: queryInterface => {
-    return queryInterface.dropTable('posts');
+  down: (queryInterface) => {
+    return queryInterface.dropTable("posts");
   },
 };

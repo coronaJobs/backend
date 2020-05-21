@@ -1,8 +1,8 @@
-'use strict';
+"use strict";
 
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('blacklists', {
+    return queryInterface.createTable("blacklists", {
       id: {
         type: Sequelize.INTEGER,
         allowNull: false,
@@ -22,7 +22,7 @@ module.exports = {
     });
   },
 
-  down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('blacklists');
-  }
+  down: (queryInterface) => {
+    return queryInterface.dropTable("blacklists");
+  },
 };
