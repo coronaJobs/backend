@@ -1,5 +1,4 @@
 const { db } = require('../../models');
-const validator = require('validator');
 const {
     UserInputError
 } = require('apollo-server')
@@ -41,7 +40,7 @@ module.exports = {
       const entity = db[entityName.toLowerCase()]
 
       try {
-
+        
         const result = await ctx.ability.can(entity, action.toLowerCase(), filter)
 
         return result
@@ -56,8 +55,6 @@ module.exports = {
               throw error
           }
       }
-
-      
 
       
     },
