@@ -1,11 +1,9 @@
-const { compiler } = require('./compiler')
+const { compiler } = require("./compiler");
 
 const setAbility = (user) => {
-    
-    const ability = compiler(user)
+  const ability = compiler(user);
 
-    return ability
-}
+  return ability;
+};
 
-
-module.exports = { setAbility }
+module.exports = { setAbility };
