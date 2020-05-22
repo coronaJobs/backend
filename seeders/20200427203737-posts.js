@@ -1,9 +1,9 @@
-'use strict';
+"use strict";
 
 module.exports = {
-  up: queryInterface => {
+  up: (queryInterface) => {
     return queryInterface.bulkInsert(
-      'posts',
+      "posts",
       [
         {
           name: 'Se busca jardinero',
@@ -11,12 +11,12 @@ module.exports = {
           applicantLimit: 2,
           ownerId: 4,
           stateId: 1,
-          createdAt: '2020-04-27 16:30:46.847+00',
-          updatedAt: '2020-04-27 16:30:46.847+00',
+          createdAt: "2020-04-27 16:30:46.847+00",
+          updatedAt: "2020-04-27 16:30:46.847+00",
         },
         {
-          name: 'Busco fabricante de mascarillas',
-          description: 'Se necesitan 50 mascarillas dentro de cuatro días.',
+          name: "Busco fabricante de mascarillas",
+          description: "Se necesitan 50 mascarillas dentro de cuatro días.",
           applicantLimit: 1,
           ownerId: 5,
           stateId: 1,
@@ -37,10 +37,10 @@ module.exports = {
     );
   },
 
-  down: async queryInterface => {
-    await queryInterface.bulkDelete('posts', null, {});
+  down: async (queryInterface) => {
+    await queryInterface.bulkDelete("posts", null, {});
     await queryInterface.sequelize.query(
-      'alter sequence posts_id_seq restart with 1;'
+      "alter sequence posts_id_seq restart with 1;"
     );
   },
 };

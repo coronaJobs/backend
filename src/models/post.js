@@ -1,27 +1,28 @@
-'use strict'
+"use strict";
 module.exports = (sequelize, DataTypes) => {
-  const post = sequelize.define('post', {
+  const post = sequelize.define("post", {
     name: DataTypes.STRING,
     description: DataTypes.STRING,
     applicantLimit: DataTypes.INTEGER,
-    active: {type: DataTypes.BOOLEAN, defaultValue: true},
+    active: { type: DataTypes.BOOLEAN, defaultValue: true },
   });
 
   post.associate = models => {
     post.belongsTo(models.user, {
-      foreignKey: 'ownerId',
-      as: 'owner'
+      foreignKey: "ownerId",
+      as: "owner"
     });
     post.belongsTo(models.postState, {
-      foreignKey: 'stateId',
-      as: 'state'
+      foreignKey: "stateId",
+      as: "state"
     });
     post.belongsToMany(models.user, {
-      through: 'application',
-      as: 'applicants',
-      foreignKey: 'offerId'
+      through: "application",
+      as: "applicants",
+      foreignKey: "offerId"
     });
   };
 
   return post;
 };
+

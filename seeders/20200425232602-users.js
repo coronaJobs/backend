@@ -1,13 +1,13 @@
-'use strict';
+"use strict";
 
-const bcrypt = require('bcryptjs');
+const bcrypt = require("bcryptjs");
 
 const salt = bcrypt.genSaltSync(Number(process.env.PASSWORD_SALT));
 
 module.exports = {
-  up: queryInterface => {
+  up: (queryInterface) => {
     return queryInterface.bulkInsert(
-      'users',
+      "users",
       [
         {
           rut: '20.513.280-5',
@@ -21,23 +21,23 @@ module.exports = {
           profilePicture: '',
           resumeUrl: '',
           */
-          createdAt: '2020-04-25 13:17:36.847+00',
-          updatedAt: '2020-04-25 13:17:36.847+00',
+          createdAt: "2020-04-25 13:17:36.847+00",
+          updatedAt: "2020-04-25 13:17:36.847+00",
         },
         {
-          rut: '12.360.217-k',
-          name: 'Kimberley Scarleth Gonzalez',
-          mail: 'kimberley@coronajobs.com',
-          phone: '8641463',
-          address: 'San Telmo 4577',
+          rut: "12.360.217-k",
+          name: "Kimberley Scarleth Gonzalez",
+          mail: "kimberley@coronajobs.com",
+          phone: "8641463",
+          address: "San Telmo 4577",
           roleId: 2,
-          password: bcrypt.hashSync('123123', salt),
+          password: bcrypt.hashSync("123123", salt),
           /*
           profilePicture: '',
           resumeUrl: '',
           */
-          createdAt: '2020-04-25 13:17:36.847+00',
-          updatedAt: '2020-04-25 13:17:36.847+00',
+          createdAt: "2020-04-25 13:17:36.847+00",
+          updatedAt: "2020-04-25 13:17:36.847+00",
         },
         {
           rut: '19.438.496-3',
@@ -104,10 +104,10 @@ module.exports = {
     );
   },
 
-  down: async queryInterface => {
-    await queryInterface.bulkDelete('users', null, {});
+  down: async (queryInterface) => {
+    await queryInterface.bulkDelete("users", null, {});
     await queryInterface.sequelize.query(
-      'alter sequence users_id_seq restart with 1;'
+      "alter sequence users_id_seq restart with 1;"
     );
   },
 };

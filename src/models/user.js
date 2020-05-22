@@ -1,17 +1,17 @@
-'use strict'
+"use strict";
 
-const bcrypt = require('bcryptjs');
+const bcrypt = require("bcryptjs");
 
 async function buildPasswordHash(instance) {
-  if (instance.changed('password')) {
+  if (instance.changed("password")) {
     const salt = await bcrypt.genSalt(Number(process.env.PASSWORD_SALT));
     const hash = await bcrypt.hash(instance.password, salt);
-    instance.set('password', hash);
+    instance.set("password", hash);
   }
 }
 
 module.exports = (sequelize, DataTypes) => {
-  const user = sequelize.define('user', {
+  const user = sequelize.define("user", {
     rut: DataTypes.STRING,
     name: DataTypes.STRING,
     mail: DataTypes.STRING,
@@ -20,18 +20,19 @@ module.exports = (sequelize, DataTypes) => {
     address: DataTypes.STRING,
     profilePicture: DataTypes.STRING,
     resumeUrl: DataTypes.STRING,
-    active: {type: DataTypes.BOOLEAN, defaultValue: true},
+    active: { type: DataTypes.BOOLEAN, defaultValue: true },
   });
 
   user.associate = (models) => {
     user.belongsTo(models.role);
     user.hasMany(models.post, {
-      foreignKey: 'ownerId',
-      as: 'posts'});
+      foreignKey: "ownerId",
+      as: "posts"
+    });
     user.belongsToMany(models.post, {
-      through: 'application',
-      as: 'offers',
-      foreignKey: 'applicantId'
+      through: "application",
+      as: "offers",
+      foreignKey: "applicantId"
     });
   }
   user.beforeUpdate(buildPasswordHash);

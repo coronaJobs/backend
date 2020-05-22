@@ -1,5 +1,5 @@
-const Sequelize = require('sequelize');
-const config = require('../../config/config.js');
+const Sequelize = require("sequelize");
+const config = require("../../config/config.js");
 
 const sequelize = new Sequelize(config);
 
@@ -16,7 +16,7 @@ const db = {
 };
 
 // associations
-Object.keys(db).forEach(modelName => {
+Object.keys(db).forEach((modelName) => {
   if (db[modelName].associate) {
     db[modelName].associate(db);
   }

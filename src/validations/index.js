@@ -1,3 +1,9 @@
-const { validateUserParameters } = require('./validateUserParameters')
+const validators = {};
 
-module.exports = { validateUserParameters }
+Object.assign(
+  validators,
+  require("./validateUserParameters"),
+  require("./validatePostSearchParameters")
+);
+
+module.exports = validators;
