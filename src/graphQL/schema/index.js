@@ -7,9 +7,10 @@ const postDef = require("./models/post");
 const roleDef = require("./models/role");
 const postStateDef = require("./models/postState");
 const scalarDef = require("./models/scalar");
+const applicationDef = require("./models/application");
 
 // Strings concatenation
-const typesDefs = userDef + postDef + roleDef + postStateDef + scalarDef;
+const typesDefs = userDef + postDef + roleDef + postStateDef + scalarDef + applicationDef;
 // someDef;
 
 // Import mutations for each entity
