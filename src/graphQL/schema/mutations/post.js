@@ -5,10 +5,6 @@ const postsMutations = `
         applicantLimit: Int!,
         ownerId: Int!
     ): Post
-
-    createApplication(
-        offerId: Int!
-    ): Application
 `;
 
 module.exports = postsMutations;

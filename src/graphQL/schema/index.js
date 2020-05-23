@@ -17,10 +17,16 @@ const typesDefs = userDef + postDef + roleDef + postStateDef + scalarDef + appli
 const usersMutations = require("./mutations/user");
 const postsMutations = require("./mutations/post");
 const authMutations = require("./mutations/auth");
+const applicationMutations = require("./mutations/application");
 
 // Strings concatenation
 const mutationsDefs =
-  "type Mutation {" + usersMutations + postsMutations + authMutations + "}";
+  "type Mutation {" +
+  usersMutations +
+  postsMutations +
+  authMutations +
+  applicationMutations +
+  "}";
 
 // Import queries for each entity
 const usersQueries = require("./queries/user");
