@@ -81,5 +81,8 @@ module.exports = {
     state: async (post) => {
       return await post.getState();
     },
+    applicants: async (post) => {
+      return await post.getApplicants()
+    },
   },
 };

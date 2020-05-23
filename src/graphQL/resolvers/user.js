@@ -61,5 +61,12 @@ module.exports = {
         },
       });
     },
+    applications: async (user) => {
+      return await user.getOffers({
+        where: {
+          active: true
+        }
+      })
+    },
   },
 };

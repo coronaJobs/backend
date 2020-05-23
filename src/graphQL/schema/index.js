@@ -7,19 +7,26 @@ const postDef = require("./models/post");
 const roleDef = require("./models/role");
 const postStateDef = require("./models/postState");
 const scalarDef = require("./models/scalar");
+const applicationDef = require("./models/application");
 
 // Strings concatenation
-const typesDefs = userDef + postDef + roleDef + postStateDef + scalarDef;
+const typesDefs = userDef + postDef + roleDef + postStateDef + scalarDef + applicationDef;
 // someDef;
 
 // Import mutations for each entity
 const usersMutations = require("./mutations/user");
 const postsMutations = require("./mutations/post");
 const authMutations = require("./mutations/auth");
+const applicationMutations = require("./mutations/application");
 
 // Strings concatenation
 const mutationsDefs =
-  "type Mutation {" + usersMutations + postsMutations + authMutations + "}";
+  "type Mutation {" +
+  usersMutations +
+  postsMutations +
+  authMutations +
+  applicationMutations +
+  "}";
 
 // Import queries for each entity
 const usersQueries = require("./queries/user");
