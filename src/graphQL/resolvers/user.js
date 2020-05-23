@@ -64,9 +64,16 @@ module.exports = {
     applications: async (user) => {
       return await user.getOffers({
         where: {
-          active: true
-        }
-      })
+          active: true,
+        },
+      });
+    },
+    jobs: async (user) => {
+      return await user.getJobs({
+        where: {
+          active: true,
+        },
+      });
     },
   },
 };

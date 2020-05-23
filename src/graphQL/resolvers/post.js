@@ -82,7 +82,10 @@ module.exports = {
       return await post.getState();
     },
     applicants: async (post) => {
-      return await post.getApplicants()
+      return await post.getApplicants();
+    },
+    employees: async (post) => {
+      return await post.getEmployees();
     },
   },
 };

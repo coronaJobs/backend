@@ -11,6 +11,7 @@ type User {
     posts: [Post]
     role: Role!
     applications: [Post]
+    jobs: [Post]
 }
 `;
 
