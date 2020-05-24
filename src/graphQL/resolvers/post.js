@@ -13,7 +13,7 @@ module.exports = {
         text,
         fromDate,
         toDate,
-        ownerId,
+        communeId,
         fromApplicantLimit,
         toApplicantLimit,
       } = params;
@@ -46,8 +46,8 @@ module.exports = {
         };
       }
 
-      if (ownerId) {
-        filter.where.ownerId = ownerId;
+      if (communeId) {
+        filter.where.communeId = communeId;
       }
 
       if (fromApplicantLimit && toApplicantLimit) {
@@ -82,7 +82,10 @@ module.exports = {
       return await post.getState();
     },
     applicants: async (post) => {
-      return await post.getApplicants()
+      return await post.getApplicants();
+    },
+    commune: async (post) => {
+      return await post.getCommune();
     },
   },
 };
