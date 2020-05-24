@@ -10,8 +10,6 @@ rawCommunes.forEach((com) => {
   });
 });
 
-console.log(communes);
-
 module.exports = {
   up: (queryInterface) => {
     return queryInterface.bulkInsert("communes", communes, {});

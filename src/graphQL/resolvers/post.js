@@ -60,8 +60,6 @@ module.exports = {
         filter.where.applicantLimit = { [Op.lte]: toApplicantLimit };
       }
 
-      console.log(filter);
-
       return await db.post.findAll(filter);
     },
   },
