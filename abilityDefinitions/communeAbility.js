@@ -1,7 +1,7 @@
 const { db } = require("./../src/models");
 
-const communeAbility = (ability, user) => {
-  if (user) {
+const communeAbility = (ability, currentUser) => {
+  if (currentUser) {
     ability.createAbility(db.commune, "read");
   }
 };
