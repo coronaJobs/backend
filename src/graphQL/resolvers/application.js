@@ -13,16 +13,19 @@ module.exports = {
       if (!ctx.auth) {
         throw new AuthenticationError("Not authenticated");
       }
+      const offer = await db.post.findByPk(params.offerId);
+      if (offer.stateId != 1) {
+        throw new ForbiddenError("Job offer is unavailable");
+      }
+      if (offer.ownerId == ctx.currentUser.id) {
+        throw new ForbiddenError("Owner can not apply to job offer");
+      }
       const userApplications = await db.application.findAll({
         where: {
           offerId: params.offerId,
           applicantId: ctx.currentUser.id,
         },
       });
-      const offer = await db.post.findByPk(params.offerId);
-      if (offer.stateId != 1) {
-        throw new ForbiddenError("Job offer is unavailable");
-      }
       if (userApplications.length) {
         throw new ForbiddenError("User already applied for this job offer");
       }
