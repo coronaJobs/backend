@@ -1,5 +1,4 @@
 const aws = require("aws-sdk");
-const db = require("../models");
 
 // Configurate AWS
 aws.config.update({
