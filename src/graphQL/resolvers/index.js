@@ -6,6 +6,7 @@ const postState = require("./postState");
 const can = require("./can");
 const role = require("./role");
 const application = require("./application");
+const employment = require("./employment");
 
 // Import all the resolvers
 const resolvers = {
@@ -35,7 +36,8 @@ Object.assign(
   user.Mutation,
   post.Mutation,
   auth.Mutation,
-  application.Mutation
+  application.Mutation,
+  employment.Mutation
 );
 
 // Assign the subscriptions to the specific object
