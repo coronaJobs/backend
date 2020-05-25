@@ -32,9 +32,10 @@ module.exports = {
         const { profilePicture } = params;
         const { url, filePath } = await getUploadUrl(profilePicture);
         Object.assign(params, { profilePicture: filePath });
-        await db.user.create(params);
 
-        return url;
+        var user = await db.user.create(params);
+        user.profilePicture = url;
+        return user;
       } catch (error) {
         throw new ApolloError("Unexpected error", 500);
       }

@@ -9,7 +9,7 @@ const usersMutations = `
         profilePicture: String,
         resumeUrl: String,
         roleId: Int!,
-    ): String
+    ): User
     
     editUser(
         id: ID!
