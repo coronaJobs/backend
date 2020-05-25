@@ -64,6 +64,21 @@ module.exports = {
         throw new ApolloError("Unexpected error", 500);
       }
     },
+
+    deleteProfilePicture: async (_, params, ctx) => {
+      if (!ctx.auth) {
+        throw new AuthenticationError("Not authenticated");
+      }
+      const user = db.user.findByPk(params.user);
+      if (!ctx.ability.can(db.user, "update", { user })) {
+        throw new ForbiddenError("Not authorized");
+      }
+      try {
+        return await user.update({ profilePicture: null });
+      } catch (error) {
+        throw new ApolloError("Unexpected error", 500);
+      }
+    },
   },
 
   User: {
