@@ -7,6 +7,7 @@ type Post {
     owner: User!
     state: PostState!
     applicants: [User]
+    commune: Commune
     createdAt: DateTime
 }
 `;
