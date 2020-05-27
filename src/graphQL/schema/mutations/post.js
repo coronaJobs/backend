@@ -3,7 +3,7 @@ const postsMutations = `
         name: String!,
         description: String!,
         applicantLimit: Int!,
-        ownerId: Int!,
+        ownerId: Int,
         communeId: Int!
     ): Post
 `;
