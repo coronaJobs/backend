@@ -1,5 +1,6 @@
 const { db } = require("../../models");
 const { validatePostSearchParameters } = require("../../validations");
+const { ForbiddenError, UserInputError } = require("apollo-server");
 const { Op } = require("sequelize");
 const { DateTime } = require("luxon");
 
@@ -61,6 +62,20 @@ module.exports = {
       }
 
       return await db.post.findAll(filter);
+    },
+    getPost: async (_, params, ctx) => {
+      if (await ctx.ability.can(db.post, "read")) {
+        const postId = params.id;
+        const post = await db.post.findOne({
+          where: { id: postId, active: true },
+        });
+        if (post) {
+          return post;
+        }
+        throw new UserInputError("Post not found");
+      }
+
+      throw new ForbiddenError();
     },
   },
 
