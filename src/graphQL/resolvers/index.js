@@ -6,7 +6,11 @@ const postState = require("./postState");
 const can = require("./can");
 const role = require("./role");
 const application = require("./application");
+<<<<<<< HEAD
 const employment = require("./employment");
+=======
+const commune = require("./commune");
+>>>>>>> development
 
 // Import all the resolvers
 const resolvers = {
@@ -17,6 +21,7 @@ const resolvers = {
   Post: post.Post,
   User: user.User,
   PostState: postState.PostState,
+  Commune: commune.Commune,
   // Subscription: {},
 };
 
@@ -27,7 +32,8 @@ Object.assign(
   post.Query,
   postState.Query,
   can.Query,
-  role.Query
+  role.Query,
+  commune.Query
 );
 
 // Assign the mutations to the specific object

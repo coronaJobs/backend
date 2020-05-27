@@ -8,6 +8,7 @@ type Post {
     state: PostState!
     applicants: [User]
     employees: [User]
+    commune: Commune
     createdAt: DateTime
 }
 `;

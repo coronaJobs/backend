@@ -26,6 +26,10 @@ module.exports = (sequelize, DataTypes) => {
       as: "employees",
       foreignKey: "jobId",
     });
+    post.belongsTo(models.commune, {
+      foreignKey: "communeId",
+      as: "commune",
+    });
   };
 
   return post;

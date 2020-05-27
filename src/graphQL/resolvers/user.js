@@ -25,7 +25,7 @@ module.exports = {
 
   Mutation: {
     createUser: async (_, params, ctx) => {
-      validateUserParameters(params);
+      await validateUserParameters(params);
       try {
         return await db.user.create(params);
       } catch (error) {
@@ -40,7 +40,7 @@ module.exports = {
       if (ctx.currentUser.id != params.id) {
         throw new ForbiddenError("Not authorized");
       }
-      validateUserParameters(params);
+      await validateUserParameters(params);
       try {
         const editedUser = await db.user.findByPk(params.id);
         return await editedUser.update(params);
