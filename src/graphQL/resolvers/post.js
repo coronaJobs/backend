@@ -1,5 +1,8 @@
 const { db } = require("../../models");
-const { validatePostSearchParameters } = require("../../validations");
+const {
+  validatePostSearchParameters,
+  validatePostParameters,
+} = require("../../validations");
 const { ForbiddenError, UserInputError } = require("apollo-server");
 const { Op } = require("sequelize");
 const { DateTime } = require("luxon");
@@ -9,7 +12,7 @@ module.exports = {
 
   Query: {
     getAllPosts: async (_, params, ctx) => {
-      validatePostSearchParameters(params);
+      await validatePostSearchParameters(params);
       const {
         text,
         fromDate,
@@ -81,8 +84,31 @@ module.exports = {
 
   Mutation: {
     createPost: async (_, params, ctx) => {
-      params["stateId"] = 1;
-      const newPost = await db.post.create(params);
+      // validate permissions
+      const canCreatePost = await ctx.ability.can(db.post, "create");
+      if (!canCreatePost) {
+        throw new ForbiddenError();
+      }
+
+      // validate params
+      await validatePostParameters(params);
+
+      const { name, description, applicantLimit, communeId } = params;
+
+      // default initial state is 1
+      const stateId = 1;
+
+      // the owner is the currentUser
+      const ownerId = ctx.currentUser.id;
+
+      const newPost = await db.post.create({
+        name,
+        description,
+        applicantLimit,
+        communeId,
+        stateId,
+        ownerId,
+      });
       return newPost;
     },
   },
