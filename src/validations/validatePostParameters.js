@@ -33,7 +33,6 @@ const validateApplicantLimit = async (applicantLimit, validatorErrors) => {
 
 const validateCommuneId = async (communeId, validatorErrors) => {
   const commune = await db.commune.findByPk(communeId);
-  console.log(commune);
 
   if (!commune) {
     validatorErrors.communeId = "Invalid communeId, commune does not exist";
