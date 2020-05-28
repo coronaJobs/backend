@@ -55,7 +55,7 @@ const validateApplicantLimits = (
   }
 };
 
-const validatePostSearchParameters = (params) => {
+const validatePostSearchParameters = async (params) => {
   const validatorErrors = {};
 
   validateText(params.text, validatorErrors);

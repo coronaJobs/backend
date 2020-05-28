@@ -40,7 +40,7 @@ const processRut = (params, validationErrors) => {
   }
 };
 
-const validateUserParameters = (params) => {
+const validateUserParameters = async (params) => {
   const validationErrors = {};
   processMail(params, validationErrors);
   processPhone(params, validationErrors);

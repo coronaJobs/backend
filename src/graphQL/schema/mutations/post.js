@@ -3,12 +3,9 @@ const postsMutations = `
         name: String!,
         description: String!,
         applicantLimit: Int!,
-        ownerId: Int!,
+        ownerId: Int,
+        communeId: Int!,
         picture: String,
-    ): Post
-
-    deletePostPicture(
-        post: ID!
     ): Post
 `;
 

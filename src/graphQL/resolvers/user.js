@@ -26,7 +26,7 @@ module.exports = {
 
   Mutation: {
     createUser: async (_, params, ctx) => {
-      validateUserParameters(params);
+      await validateUserParameters(params);
       try {
         // Get profile picture presigned upload URL
         const { profilePicture } = params;
@@ -48,7 +48,7 @@ module.exports = {
       if (ctx.currentUser.id != params.id) {
         throw new ForbiddenError("Not authorized");
       }
-      validateUserParameters(params);
+      await validateUserParameters(params);
       try {
         const editedUser = await db.user.findByPk(params.id);
 
@@ -90,6 +90,13 @@ module.exports = {
     },
     role: async (user) => {
       return await user.getRole({
+        where: {
+          active: true,
+        },
+      });
+    },
+    applications: async (user) => {
+      return await user.getOffers({
         where: {
           active: true,
         },

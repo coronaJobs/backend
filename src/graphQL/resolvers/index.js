@@ -5,6 +5,8 @@ const auth = require("./auth");
 const postState = require("./postState");
 const can = require("./can");
 const role = require("./role");
+const application = require("./application");
+const commune = require("./commune");
 
 // Import all the resolvers
 const resolvers = {
@@ -15,6 +17,7 @@ const resolvers = {
   Post: post.Post,
   User: user.User,
   PostState: postState.PostState,
+  Commune: commune.Commune,
   // Subscription: {},
 };
 
@@ -25,11 +28,18 @@ Object.assign(
   post.Query,
   postState.Query,
   can.Query,
-  role.Query
+  role.Query,
+  commune.Query
 );
 
 // Assign the mutations to the specific object
-Object.assign(resolvers.Mutation, user.Mutation, post.Mutation, auth.Mutation);
+Object.assign(
+  resolvers.Mutation,
+  user.Mutation,
+  post.Mutation,
+  auth.Mutation,
+  application.Mutation
+);
 
 // Assign the subscriptions to the specific object
 // Object.assign(

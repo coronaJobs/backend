@@ -27,9 +27,14 @@ module.exports = (sequelize, DataTypes) => {
     user.belongsTo(models.role);
     user.hasMany(models.post, {
       foreignKey: "ownerId",
-      as: "posts",
+      as: "posts"
     });
-  };
+    user.belongsToMany(models.post, {
+      through: "application",
+      as: "offers",
+      foreignKey: "applicantId"
+    });
+  }
   user.beforeUpdate(buildPasswordHash);
   user.beforeCreate(buildPasswordHash);
 

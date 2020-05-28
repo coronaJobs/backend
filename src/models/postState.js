@@ -1,5 +1,6 @@
 "use strict";
 module.exports = (sequelize, DataTypes) => {
+
   const postState = sequelize.define("postState", {
     name: DataTypes.STRING,
     description: DataTypes.STRING,
@@ -15,3 +16,4 @@ module.exports = (sequelize, DataTypes) => {
 
   return postState;
 };
+
