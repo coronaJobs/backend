@@ -66,7 +66,6 @@ module.exports = {
         filter.where.applicantLimit = { [Op.lte]: toApplicantLimit };
       }
 
-      console.log(filter);
       const posts = await db.post.findAll(filter);
       const presignedPosts = await posts.filter((post) => {
         const path = post.picture;
@@ -76,7 +75,6 @@ module.exports = {
         }
         return post;
       });
-      console.log(presignedPosts);
 
       return presignedPosts;
     },
@@ -130,17 +128,19 @@ module.exports = {
       newPost.picture = url;
       return newPost;
     },
-    deletePostPicture: async (_, params, ctx) => {
+
+    postPictureUploadError: async (_, params, ctx) => {
       if (!ctx.auth) {
         throw new AuthenticationError("Not authenticated");
       }
-      // validation
+
+      // validate params
       const { postId } = params.postId;
       if (!postId) {
         throw new ApolloError("Invalid request", 400);
       }
-      const post = db.post.findByPk(postId);
       try {
+        const post = db.post.findByPk(postId);
         return await post.update({ picture: null });
       } catch (error) {
         throw new ApolloError("Unexpected error", 500);

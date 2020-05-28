@@ -76,7 +76,7 @@ module.exports = {
       }
     },
 
-    deleteProfilePicture: async (_, params, ctx) => {
+    profilePictureUploadError: async (_, params, ctx) => {
       if (!ctx.auth) {
         throw new AuthenticationError("Not authenticated");
       }

@@ -8,7 +8,7 @@ const postsMutations = `
         picture: String,
     ): Post
 
-    deletePostPicture(
+    postPictureUploadError(
         postId: ID!
     ): Post
 `;

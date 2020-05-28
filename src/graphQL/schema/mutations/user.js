@@ -22,7 +22,7 @@ const usersMutations = `
         resumeUrl: String,
     ): User
 
-    deleteProfilePicture: User
+    profilePictureUploadError: User
 
     deleteCV: User
 `;
