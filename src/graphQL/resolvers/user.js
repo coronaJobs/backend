@@ -12,11 +12,22 @@ module.exports = {
 
   Query: {
     getUsers: async (_, params, ctx) => {
-      return await db.user.findAll();
+      const users = await db.user.findAll();
+      return await users.filter((user) => {
+        const path = user.profilePicture;
+        if (path) {
+          const signedUrl = getFileUrl(path);
+          user.profilePicture = signedUrl;
+        }
+        return user;
+      });
     },
 
     getUser: async (_, { id }, ctx) => {
-      return await db.user.findByPk(id);
+      const user = await db.user.findByPk(id);
+      const filePath = user.profilePicture;
+      user.profilePicture = await getFileUrl(filePath);
+      return user;
     },
 
     getCurrentUser: async (_, __, ctx) => {
@@ -69,15 +80,8 @@ module.exports = {
       if (!ctx.auth) {
         throw new AuthenticationError("Not authenticated");
       }
-      const user = db.user.findByPk(params.user);
-      if (!user) {
-        throw new ApolloError("Invalid request", 400);
-      }
-      if (!ctx.ability.can(db.user, "update", { user })) {
-        throw new ForbiddenError("Not authorized");
-      }
       try {
-        return await user.update({ profilePicture: null });
+        return await ctx.currentUser.update({ profilePicture: null });
       } catch (error) {
         throw new ApolloError("Unexpected error", 500);
       }

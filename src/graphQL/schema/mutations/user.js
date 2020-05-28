@@ -22,13 +22,9 @@ const usersMutations = `
         resumeUrl: String,
     ): User
 
-    deleteProfilePicture(
-        user: ID!
-    ): User
+    deleteProfilePicture: User
 
-    deleteCV(
-        user: ID!
-    ): User
+    deleteCV: User
 `;
 
 module.exports = usersMutations;
