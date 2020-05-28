@@ -70,6 +70,9 @@ module.exports = {
         throw new AuthenticationError("Not authenticated");
       }
       const user = db.user.findByPk(params.user);
+      if (!user) {
+        throw new ApolloError("Invalid request", 400);
+      }
       if (!ctx.ability.can(db.user, "update", { user })) {
         throw new ForbiddenError("Not authorized");
       }
