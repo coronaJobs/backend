@@ -21,6 +21,10 @@ const usersMutations = `
         profilePicture: String,
         resumeUrl: String,
     ): User
+
+    profilePictureUploadError: User
+
+    deleteCV: User
 `;
 
 module.exports = usersMutations;
