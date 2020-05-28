@@ -4,6 +4,7 @@ const {
   AuthenticationError,
   ForbiddenError,
 } = require("apollo-server");
+const { deleteApplication, checkApplication } = require("../../utils");
 
 module.exports = {
   Subscription: {},
@@ -20,24 +21,9 @@ module.exports = {
       if (offer.stateId != 1) {
         throw new ForbiddenError("Job offer is not open");
       }
-      const userApplications = await db.application.findAll({
-        where: {
-          offerId: params.offerId,
-          applicantId: params.applicantId,
-        },
-      });
-      if (!userApplications.length) {
-        throw new ForbiddenError("User is not applying for this job offer");
-      }
+      await checkApplication(params.offerId, params.applicantId);
       try {
-        const application = await db.application.findOne({
-          where: {
-            offerId: params.offerId,
-            applicantId: params.applicantId,
-            active: true,
-          },
-        });
-        await application.destroy();
+        await deleteApplication(params.offerId, params.applicantId);
         const newEmployment = await db.employment.create({
           employeeId: params.applicantId,
           jobId: params.offerId,

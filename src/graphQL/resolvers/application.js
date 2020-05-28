@@ -4,6 +4,7 @@ const {
   AuthenticationError,
   ForbiddenError,
 } = require("apollo-server");
+const { deleteApplication, checkApplication } = require("../../utils");
 
 module.exports = {
   Subscription: {},
@@ -43,24 +44,9 @@ module.exports = {
       if (!ctx.auth) {
         throw new AuthenticationError("Not authenticated");
       }
-      const userApplications = await db.application.findAll({
-        where: {
-          offerId: params.offerId,
-          applicantId: ctx.currentUser.id,
-        },
-      });
-      if (!userApplications.length) {
-        throw new ForbiddenError("User is not applying for this job offer");
-      }
-
+      await checkApplication(params.offerId, ctx.currentUser.id);
       try {
-        const application = await db.application.findOne({
-          where: {
-            offerId: params.offerId,
-            applicantId: ctx.currentUser.id,
-          },
-        });
-        await application.destroy();
+        await deleteApplication(params.offerId, ctx.currentUser.id);
         return true;
       } catch (error) {
         throw new ApolloError("Unexpected error", 500);

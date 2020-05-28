@@ -6,11 +6,8 @@ const postState = require("./postState");
 const can = require("./can");
 const role = require("./role");
 const application = require("./application");
-<<<<<<< HEAD
 const employment = require("./employment");
-=======
 const commune = require("./commune");
->>>>>>> development
 
 // Import all the resolvers
 const resolvers = {
