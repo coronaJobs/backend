@@ -20,6 +20,7 @@ const getUploadUrl = async (filename) => {
   // Generate file path
   const filenameParts = filename.split(".");
   const extension = filenameParts[filenameParts.length - 1];
+  // missing extension validation
   const timestamp = (new Date() / 1).toString();
 
   // Generate the path for the file in the bucket
