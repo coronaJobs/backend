@@ -7,6 +7,7 @@ const {
   ForbiddenError,
   ApolloError,
 } = require("apollo-server");
+const { getUploadUrl, getFileUrl } = require("../../services/aws-s3");
 
 module.exports = {
   Subscription: {},
@@ -81,7 +82,15 @@ module.exports = {
       }
       try {
         params["stateId"] = 1;
+
+        // Get picture presigned URL
+        const { picture } = params;
+        const { url, filePath } = await getUploadUrl(picture);
+        Object.assign(params, { picture: filePath });
+
+        // Create post
         const newPost = await db.post.create(params);
+        newPost.picture = url;
         return newPost;
       } catch (error) {
         throw new ApolloError("Unexpected error", 500);
