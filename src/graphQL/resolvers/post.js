@@ -67,8 +67,18 @@ module.exports = {
       }
 
       console.log(filter);
+      const posts = await db.post.findAll(filter);
+      const presignedPosts = await posts.filter((post) => {
+        const path = post.picture;
+        if (path) {
+          const signedUrl = getFileUrl(path);
+          post.picture = signedUrl;
+        }
+        return post;
+      });
+      console.log(presignedPosts);
 
-      return await db.post.findAll(filter);
+      return presignedPosts;
     },
   },
 
@@ -92,6 +102,21 @@ module.exports = {
         const newPost = await db.post.create(params);
         newPost.picture = url;
         return newPost;
+      } catch (error) {
+        throw new ApolloError("Unexpected error", 500);
+      }
+    },
+
+    deletePostPicture: async (_, params, ctx) => {
+      if (!ctx.auth) {
+        throw new AuthenticationError("Not authenticated");
+      }
+      const post = params.post ? db.post.findByPk(params.post) : null;
+      if (!post) {
+        throw new ApolloError("Invalid request", 400);
+      }
+      try {
+        return await post.update({ picture: null });
       } catch (error) {
         throw new ApolloError("Unexpected error", 500);
       }
