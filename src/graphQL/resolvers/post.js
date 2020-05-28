@@ -2,6 +2,11 @@ const { db } = require("../../models");
 const { validatePostSearchParameters } = require("../../validations");
 const { Op } = require("sequelize");
 const { DateTime } = require("luxon");
+const {
+  AuthenticationError,
+  ForbiddenError,
+  ApolloError,
+} = require("apollo-server");
 
 module.exports = {
   Subscription: {},
@@ -68,9 +73,19 @@ module.exports = {
 
   Mutation: {
     createPost: async (_, params, ctx) => {
-      params["stateId"] = 1;
-      const newPost = await db.post.create(params);
-      return newPost;
+      if (!ctx.auth) {
+        throw new AuthenticationError("Not authenticated");
+      }
+      if (!ctx.ability.can(db.post, "create")) {
+        throw new ForbiddenError("Not authorized");
+      }
+      try {
+        params["stateId"] = 1;
+        const newPost = await db.post.create(params);
+        return newPost;
+      } catch (error) {
+        throw new ApolloError("Unexpected error", 500);
+      }
     },
   },
 
