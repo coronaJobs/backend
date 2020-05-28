@@ -4,6 +4,7 @@ module.exports = (sequelize, DataTypes) => {
     name: DataTypes.STRING,
     description: DataTypes.STRING,
     applicantLimit: DataTypes.INTEGER,
+    picture: DataTypes.STRING,
     active: { type: DataTypes.BOOLEAN, defaultValue: true },
   });
 
