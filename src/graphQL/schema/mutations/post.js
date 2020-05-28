@@ -7,6 +7,10 @@ const postsMutations = `
         communeId: Int!,
         picture: String,
     ): Post
+
+    deletePostPicture(
+        postId: ID!
+    ): Post
 `;
 
 module.exports = postsMutations;

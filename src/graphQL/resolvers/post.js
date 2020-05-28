@@ -134,10 +134,12 @@ module.exports = {
       if (!ctx.auth) {
         throw new AuthenticationError("Not authenticated");
       }
-      const post = params.post ? db.post.findByPk(params.post) : null;
-      if (!post) {
+      // validation
+      const { postId } = params.postId;
+      if (!postId) {
         throw new ApolloError("Invalid request", 400);
       }
+      const post = db.post.findByPk(postId);
       try {
         return await post.update({ picture: null });
       } catch (error) {
