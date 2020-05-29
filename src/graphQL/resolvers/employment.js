@@ -30,7 +30,9 @@ module.exports = {
       if (offer.stateId != 1) {
         throw new ForbiddenError("Job offer is not open");
       }
-      await checkApplication(params.offerId, params.applicantId);
+      if (!(await checkApplication(params.offerId, params.applicantId))) {
+        throw new ForbiddenError("User is not applying for this job offer");
+      }
       try {
         await deleteApplication(params.offerId, params.applicantId);
         const newEmployment = await db.employment.create({
@@ -58,7 +60,9 @@ module.exports = {
       if (offer.stateId != 1 && offer.stateId != 2) {
         throw new ForbiddenError("Job offer is unavailable");
       }
-      await checkEmployment(params.jobId, params.employeeId);
+      if (!(await checkEmployment(params.jobId, params.employeeId))) {
+        throw new ForbiddenError("User is not employed for this job");
+      }
       try {
         await deleteEmployment(params.jobId, params.employeeId);
         await updatePostState(offer);

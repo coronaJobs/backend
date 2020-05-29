@@ -4,7 +4,11 @@ const {
   AuthenticationError,
   ForbiddenError,
 } = require("apollo-server");
-const { deleteApplication, checkApplication } = require("../../utils");
+const {
+  deleteApplication,
+  checkApplication,
+  checkEmployment,
+} = require("../../utils");
 
 module.exports = {
   Subscription: {},
@@ -24,16 +28,12 @@ module.exports = {
       if (offer.ownerId == ctx.currentUser.id) {
         throw new ForbiddenError("Owner can not apply to job offer");
       }
-      const userApplications = await db.application.findAll({
-        where: {
-          offerId: params.offerId,
-          applicantId: ctx.currentUser.id,
-        },
-      });
-      if (userApplications.length) {
+      if (await checkApplication(params.offerId, ctx.currentUser.id)) {
         throw new ForbiddenError("User already applied for this job offer");
       }
-
+      if (await checkEmployment(params.offerId, ctx.currentUser.id)) {
+        throw new ForbiddenError("User is already employed for this job");
+      }
       try {
         params["applicantId"] = ctx.currentUser.id;
         const newApplication = await db.application.create(params);
@@ -47,7 +47,9 @@ module.exports = {
       if (!ctx.auth) {
         throw new AuthenticationError("Not authenticated");
       }
-      await checkApplication(params.offerId, ctx.currentUser.id);
+      if (!(await checkApplication(params.offerId, ctx.currentUser.id))) {
+        throw new ForbiddenError("User is not applying for this job offer");
+      }
       try {
         await deleteApplication(params.offerId, ctx.currentUser.id);
         return true;

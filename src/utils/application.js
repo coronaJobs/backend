@@ -1,5 +1,4 @@
 const { db } = require("../models");
-const { ForbiddenError } = require("apollo-server");
 
 const deleteApplication = async (offerId, applicantId) => {
   const application = await db.application.findOne({
@@ -19,7 +18,9 @@ const checkApplication = async (offerId, applicantId) => {
     },
   });
   if (!userApplications.length) {
-    throw new ForbiddenError("User is not applying for this job offer");
+    return false;
+  } else {
+    return true;
   }
 };
 
