@@ -24,7 +24,7 @@ const usersMutations = `
 
     profilePictureUploadError: User
 
-    deleteCV: User
+    resumeUploadError: User
 `;
 
 module.exports = usersMutations;
