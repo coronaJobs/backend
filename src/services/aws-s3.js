@@ -50,7 +50,9 @@ const deleteResource = async (filePath) => {
   try {
     const params = { Key: filePath };
     Object.assign(params, s3BaseParams);
-    s3.deleteObject(params);
+    return s3.deleteObject(params, (err, data) => {
+      return err ? false : true;
+    });
   } catch (error) {
     return null;
   }
