@@ -55,6 +55,9 @@ module.exports = {
       if (ctx.currentUser.id != offer.ownerId) {
         throw new ForbiddenError("User is not the owner of this job offer");
       }
+      if (offer.stateId != 1 && offer.stateId != 2) {
+        throw new ForbiddenError("Job offer is unavailable");
+      }
       await checkEmployment(params.jobId, params.employeeId);
       try {
         await deleteEmployment(params.jobId, params.employeeId);
