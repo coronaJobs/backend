@@ -1,5 +1,9 @@
 const { db } = require("../../models");
-const { getUploadUrl, getFileUrl } = require("../../services/aws-s3");
+const {
+  getUploadUrl,
+  getFileUrl,
+  deleteResource,
+} = require("../../services/aws-s3");
 const {
   AuthenticationError,
   ForbiddenError,
@@ -53,24 +57,50 @@ module.exports = {
     },
 
     editUser: async (_, params, ctx) => {
+      // validate session
       if (!ctx.auth) {
         throw new AuthenticationError("Not authenticated");
       }
+
+      // validate user
       if (ctx.currentUser.id != params.id) {
         throw new ForbiddenError("Not authorized");
       }
+
+      // validate params
       await validateUserParameters(params);
+
+      const { profilePicture, resumeUrl } = params;
+
       try {
+        // Get user
         const editedUser = await db.user.findByPk(params.id);
 
-        // Get profile picture presigned downlaod URL
-        const { profilePicture } = params;
+        // Get profile picture presigned upload URL
+        let pictureUploadUrl, resumeUploadUrl;
         if (profilePicture) {
-          const url = await getFileUrl(profilePicture);
-          Object.assign(params, { profilePicture: url });
+          deleteResource(editedUser.profilePicture);
+          const { url, filePath } = await getUploadUrl(profilePicture);
+          pictureUploadUrl = url;
+          Object.assign(params, { profilePicture: filePath });
         }
 
-        return await editedUser.update(params);
+        // Get CV presigned download URL
+        if (resumeUrl) {
+          deleteResource(editedUser.resumeUrl);
+          const { url, filePath } = await getUploadUrl(resumeUrl);
+          resumeUploadUrl = url;
+          Object.assign(params, { resumeUrl: filePath });
+        }
+
+        const user = await editedUser.update(params);
+        if (pictureUploadUrl) {
+          user.profilePicture = pictureUploadUrl;
+        }
+        if (resumeUploadUrl) {
+          user.resumeUrl = resumeUploadUrl;
+        }
+        return user;
       } catch (error) {
         throw new ApolloError("Unexpected error", 500);
       }
@@ -82,6 +112,17 @@ module.exports = {
       }
       try {
         return await ctx.currentUser.update({ profilePicture: null });
+      } catch (error) {
+        throw new ApolloError("Unexpected error", 500);
+      }
+    },
+
+    resumeUploadError: async (_, params, ctx) => {
+      if (!ctx.auth) {
+        throw new AuthenticationError("Not authenticated");
+      }
+      try {
+        return await ctx.currentUser.update({ resumeUrl: null });
       } catch (error) {
         throw new ApolloError("Unexpected error", 500);
       }
