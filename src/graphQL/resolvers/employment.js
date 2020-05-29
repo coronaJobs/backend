@@ -8,6 +8,8 @@ const {
   deleteApplication,
   checkApplication,
   checkEmployment,
+  deleteEmployment,
+  updatePostState,
 } = require("../../utils");
 
 module.exports = {
@@ -35,16 +37,7 @@ module.exports = {
           employeeId: params.applicantId,
           jobId: params.offerId,
         });
-        const jobEmployees = await db.employment.findAll({
-          where: {
-            jobId: params.offerId,
-          },
-        });
-        if (jobEmployees.length == offer.applicantLimit) {
-          await offer.update({
-            stateId: 2,
-          });
-        }
+        await updatePostState(offer);
         return newEmployment;
       } catch (error) {
         throw new ApolloError("Unexpected error", 500);
@@ -63,8 +56,13 @@ module.exports = {
         throw new ForbiddenError("User is not the owner of this job offer");
       }
       await checkEmployment(params.jobId, params.employeeId);
-
-      return true;
+      try {
+        await deleteEmployment(params.jobId, params.employeeId);
+        await updatePostState(offer);
+        return true;
+      } catch (error) {
+        throw new ApolloError("Unexpected error", 500);
+      }
     },
   },
 };
