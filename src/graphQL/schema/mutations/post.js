@@ -4,7 +4,12 @@ const postsMutations = `
         description: String!,
         applicantLimit: Int!,
         ownerId: Int,
-        communeId: Int!
+        communeId: Int!,
+        picture: String,
+    ): Post
+
+    postPictureUploadError(
+        postId: ID!
     ): Post
 `;
 
