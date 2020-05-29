@@ -15,6 +15,9 @@ module.exports = {
         throw new AuthenticationError("Not authenticated");
       }
       const offer = await db.post.findByPk(params.offerId);
+      if (!offer) {
+        throw new ForbiddenError("Job offer does not exist");
+      }
       if (offer.stateId != 1) {
         throw new ForbiddenError("Job offer is unavailable");
       }

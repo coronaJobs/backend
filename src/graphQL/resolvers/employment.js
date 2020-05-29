@@ -4,7 +4,11 @@ const {
   AuthenticationError,
   ForbiddenError,
 } = require("apollo-server");
-const { deleteApplication, checkApplication } = require("../../utils");
+const {
+  deleteApplication,
+  checkApplication,
+  checkEmployment,
+} = require("../../utils");
 
 module.exports = {
   Subscription: {},
@@ -15,6 +19,9 @@ module.exports = {
         throw new AuthenticationError("Not authenticated");
       }
       const offer = await db.post.findByPk(params.offerId);
+      if (!offer) {
+        throw new ForbiddenError("Job offer does not exist");
+      }
       if (ctx.currentUser.id != offer.ownerId) {
         throw new ForbiddenError("User is not the owner of this job offer");
       }
@@ -42,6 +49,22 @@ module.exports = {
       } catch (error) {
         throw new ApolloError("Unexpected error", 500);
       }
+    },
+
+    removeEmployee: async (_, params, ctx) => {
+      if (!ctx.auth) {
+        throw new AuthenticationError("Not authenticated");
+      }
+      const offer = await db.post.findByPk(params.jobId);
+      if (!offer) {
+        throw new ForbiddenError("Job offer does not exist");
+      }
+      if (ctx.currentUser.id != offer.ownerId) {
+        throw new ForbiddenError("User is not the owner of this job offer");
+      }
+      await checkEmployment(params.jobId, params.employeeId);
+
+      return true;
     },
   },
 };
