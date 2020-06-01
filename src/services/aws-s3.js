@@ -11,7 +11,7 @@ aws.config.update({
 const s3 = new aws.S3();
 
 // S3 required params
-const s3Params = {
+const s3BaseParams = {
   Bucket: process.env.AWS_BUCKET_NAME || "coronajobs_pictures",
   Expires: Number(process.env.AWS_EXPIRATION_TIME) || 60,
 };
@@ -26,7 +26,7 @@ const getUploadUrl = async (filename) => {
   // Generate the path for the file in the bucket
   const filePath = `${timestamp}.${extension}`;
   const getParams = { Key: filePath };
-  Object.assign(getParams, s3Params);
+  Object.assign(getParams, s3BaseParams);
 
   // Return a temporal url for upload the file
   const url = await s3.getSignedUrl("putObject", getParams);
@@ -37,7 +37,7 @@ const getFileUrl = async (filePath) => {
   try {
     // Get the temporal url for the file
     const getParams = { Key: filePath };
-    Object.assign(getParams, s3Params);
+    Object.assign(getParams, s3BaseParams);
     const url = await s3.getSignedUrl("getObject", getParams);
     return { url };
   } catch (error) {
@@ -46,4 +46,16 @@ const getFileUrl = async (filePath) => {
   }
 };
 
-module.exports = { getUploadUrl, getFileUrl, s3Params, s3 };
+const deleteResource = async (filePath) => {
+  try {
+    const params = { Key: filePath };
+    Object.assign(params, s3BaseParams);
+    return s3.deleteObject(params, (err, data) => {
+      return err ? false : true;
+    });
+  } catch (error) {
+    return null;
+  }
+};
+
+module.exports = { getUploadUrl, getFileUrl, deleteResource, s3BaseParams, s3 };
