@@ -41,15 +41,33 @@ module.exports = {
 
   Mutation: {
     createUser: async (_, params, ctx) => {
+      // validate params
       await validateUserParameters(params);
+      const { profilePicture, resumeUrl } = params;
+      let pictureUploadUrl, resumeUploadUrl;
+
       try {
         // Get profile picture presigned upload URL
-        const { profilePicture } = params;
-        const { url, filePath } = await getUploadUrl(profilePicture);
-        Object.assign(params, { profilePicture: filePath });
+        if (profilePicture) {
+          const { url, filePath } = await getUploadUrl(profilePicture);
+          Object.assign(params, { profilePicture: filePath });
+          pictureUploadUrl = url;
+        }
 
-        var user = await db.user.create(params);
-        user.profilePicture = url;
+        // Get CV presigned upload URL
+        if (resumeUrl) {
+          const { url, filePath } = await getUploadUrl(resumeUrl);
+          Object.assign(params, { resumeUrl: filePath });
+          resumeUploadUrl = url;
+        }
+
+        const user = await db.user.create(params);
+        if (pictureUploadUrl) {
+          user.profilePicture = pictureUploadUrl;
+        }
+        if (resumeUploadUrl) {
+          user.resumeUrl = resumeUploadUrl;
+        }
         return user;
       } catch (error) {
         throw new ApolloError("Unexpected error", 500);
@@ -69,28 +87,27 @@ module.exports = {
 
       // validate params
       await validateUserParameters(params);
-
       const { profilePicture, resumeUrl } = params;
+      let pictureUploadUrl, resumeUploadUrl;
 
       try {
         // Get user
         const editedUser = await db.user.findByPk(params.id);
 
         // Get profile picture presigned upload URL
-        let pictureUploadUrl, resumeUploadUrl;
         if (profilePicture) {
           deleteResource(editedUser.profilePicture);
           const { url, filePath } = await getUploadUrl(profilePicture);
-          pictureUploadUrl = url;
           Object.assign(params, { profilePicture: filePath });
+          pictureUploadUrl = url;
         }
 
         // Get CV presigned download URL
         if (resumeUrl) {
           deleteResource(editedUser.resumeUrl);
           const { url, filePath } = await getUploadUrl(resumeUrl);
-          resumeUploadUrl = url;
           Object.assign(params, { resumeUrl: filePath });
+          resumeUploadUrl = url;
         }
 
         const user = await editedUser.update(params);
