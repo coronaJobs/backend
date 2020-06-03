@@ -1,4 +1,5 @@
 const { db } = require("../models");
+const { ForbiddenError } = require("apollo-server");
 
 const checkEmployment = async (jobId, employeeId) => {
   const userEmployments = await db.employment.findAll({
@@ -41,4 +42,18 @@ const updatePostState = async (post) => {
   }
 };
 
-module.exports = { checkEmployment, deleteEmployment, updatePostState };
+const jobValidations = (offer, ctx) => {
+  if (!offer) {
+    throw new ForbiddenError("Job offer does not exist");
+  }
+  if (ctx.currentUser.id != offer.ownerId) {
+    throw new ForbiddenError("User is not the owner of this job offer");
+  }
+};
+
+module.exports = {
+  checkEmployment,
+  deleteEmployment,
+  updatePostState,
+  jobValidations,
+};

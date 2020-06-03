@@ -10,6 +10,7 @@ const {
   checkEmployment,
   deleteEmployment,
   updatePostState,
+  jobValidations,
 } = require("../../utils");
 
 module.exports = {
@@ -21,12 +22,7 @@ module.exports = {
         throw new AuthenticationError("Not authenticated");
       }
       const offer = await db.post.findByPk(params.offerId);
-      if (!offer) {
-        throw new ForbiddenError("Job offer does not exist");
-      }
-      if (ctx.currentUser.id != offer.ownerId) {
-        throw new ForbiddenError("User is not the owner of this job offer");
-      }
+      jobValidations(offer, ctx);
       if (offer.stateId != 1) {
         throw new ForbiddenError("Job offer is not open");
       }
@@ -51,12 +47,7 @@ module.exports = {
         throw new AuthenticationError("Not authenticated");
       }
       const offer = await db.post.findByPk(params.jobId);
-      if (!offer) {
-        throw new ForbiddenError("Job offer does not exist");
-      }
-      if (ctx.currentUser.id != offer.ownerId) {
-        throw new ForbiddenError("User is not the owner of this job offer");
-      }
+      jobValidations(offer, ctx);
       if (offer.stateId != 1 && offer.stateId != 2) {
         throw new ForbiddenError("Job offer is unavailable");
       }
