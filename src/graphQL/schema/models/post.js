@@ -8,6 +8,7 @@ type Post {
     state: PostState!
     picture: String
     applicants: [User]
+    employees: [User]
     commune: Commune
     createdAt: DateTime
 }

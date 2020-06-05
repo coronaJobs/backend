@@ -22,6 +22,11 @@ module.exports = (sequelize, DataTypes) => {
       as: "applicants",
       foreignKey: "offerId",
     });
+    post.belongsToMany(models.user, {
+      through: "employment",
+      as: "employees",
+      foreignKey: "jobId",
+    });
     post.belongsTo(models.commune, {
       foreignKey: "communeId",
       as: "commune",

@@ -158,6 +158,9 @@ module.exports = {
     applicants: async (post) => {
       return await post.getApplicants();
     },
+    employees: async (post) => {
+      return await post.getEmployees();
+    },
     commune: async (post) => {
       return await post.getCommune();
     },

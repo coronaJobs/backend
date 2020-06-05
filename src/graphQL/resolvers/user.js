@@ -164,5 +164,12 @@ module.exports = {
         },
       });
     },
+    jobs: async (user) => {
+      return await user.getJobs({
+        where: {
+          active: true,
+        },
+      });
+    },
   },
 };

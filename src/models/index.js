@@ -12,6 +12,7 @@ const db = {
   blacklist: sequelize.import("./blacklist"),
   postState: sequelize.import("./postState"),
   application: sequelize.import("./application"),
+  employment: sequelize.import("./employment"),
   commune: sequelize.import("./commune"),
   Sequelize,
 };

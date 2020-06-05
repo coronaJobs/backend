@@ -8,6 +8,7 @@ const roleDef = require("./models/role");
 const postStateDef = require("./models/postState");
 const scalarDef = require("./models/scalar");
 const applicationDef = require("./models/application");
+const employmentDef = require("./models/employment");
 const communeDef = require("./models/commune");
 
 // Strings concatenation
@@ -18,6 +19,7 @@ const typesDefs =
   postStateDef +
   scalarDef +
   applicationDef +
+  employmentDef +
   communeDef;
 // someDef;
 
@@ -26,6 +28,7 @@ const usersMutations = require("./mutations/user");
 const postsMutations = require("./mutations/post");
 const authMutations = require("./mutations/auth");
 const applicationMutations = require("./mutations/application");
+const employmentMutations = require("./mutations/employment");
 
 // Strings concatenation
 const mutationsDefs =
@@ -34,6 +37,7 @@ const mutationsDefs =
   postsMutations +
   authMutations +
   applicationMutations +
+  employmentMutations +
   "}";
 
 // Import queries for each entity

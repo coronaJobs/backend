@@ -1,11 +1,11 @@
 "use strict";
 module.exports = (sequelize, DataTypes) => {
-  const application = sequelize.define("application", {
+  const employment = sequelize.define("employment", {
     active: {
       type: DataTypes.BOOLEAN,
       defaultValue: true,
     },
   });
 
-  return application;
+  return employment;
 };
