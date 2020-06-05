@@ -17,11 +17,17 @@ module.exports = {
   Query: {
     getUsers: async (_, params, ctx) => {
       const users = await db.user.findAll();
-      return await users.filter((user) => {
-        const path = user.profilePicture;
-        if (path) {
-          const signedUrl = getFileUrl(path);
-          user.profilePicture = signedUrl;
+      return await users.filter(async (user) => {
+        const picturePath = user.profilePicture;
+        if (picturePath) {
+          const { url } = await getFileUrl(picturePath);
+          user.profilePicture = url;
+        }
+
+        const resumePath = user.resumeUrl;
+        if (resumePath) {
+          const { url } = await getFileUrl(resumePath);
+          user.resumeUrl = url;
         }
         return user;
       });
@@ -29,8 +35,14 @@ module.exports = {
 
     getUser: async (_, { id }, ctx) => {
       const user = await db.user.findByPk(id);
-      const filePath = user.profilePicture;
-      user.profilePicture = await getFileUrl(filePath);
+      if (user.profilePicture) {
+        const { url } = await getFileUrl(user.profilePicture);
+        user.profilePicture = url;
+      }
+      if (user.resumeUrl) {
+        const { url } = await getFileUrl(user.resumeUrl);
+        user.resumeUrl = url;
+      }
       return user;
     },
 

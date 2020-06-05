@@ -67,11 +67,11 @@ module.exports = {
       }
 
       const posts = await db.post.findAll(filter);
-      const presignedPosts = await posts.filter((post) => {
+      const presignedPosts = await posts.filter(async (post) => {
         const path = post.picture;
         if (path) {
-          const signedUrl = getFileUrl(path);
-          post.picture = signedUrl;
+          const { url } = await getFileUrl(path);
+          post.picture = url;
         }
         return post;
       });
@@ -85,6 +85,11 @@ module.exports = {
           where: { id: postId, active: true },
         });
         if (post) {
+          const { picture } = params;
+          if (picture) {
+            const { url } = await getFileUrl(picture);
+            post.picture = url;
+          }
           return post;
         }
         throw new UserInputError("Post not found");
