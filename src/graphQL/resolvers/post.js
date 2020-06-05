@@ -114,9 +114,14 @@ module.exports = {
       const ownerId = ctx.currentUser.id;
 
       // Get picture presigned URL
-      const { url, filePath } = await getUploadUrl(picture);
+      let url, filePath;
+      if (picture) {
+        const uploadData = await getUploadUrl(picture);
+        url = uploadData.url;
+        filePath = uploadData.filePath;
+      }
 
-      const newPost = await db.post.create({
+      const postParams = {
         name,
         description,
         applicantLimit,
@@ -124,7 +129,9 @@ module.exports = {
         stateId,
         ownerId,
         picture: filePath,
-      });
+      };
+
+      const newPost = await db.post.create(postParams);
       newPost.picture = url;
       return newPost;
     },
