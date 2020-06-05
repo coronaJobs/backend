@@ -9,34 +9,29 @@ const {
   checkApplication,
   checkEmployment,
 } = require("../../utils");
-
+const { validateApplicationParameters } = require("./../../validations");
 module.exports = {
   Subscription: {},
 
   Mutation: {
     createApplication: async (_, params, ctx) => {
-      if (!ctx.auth) {
-        throw new AuthenticationError("Not authenticated");
+      const userCanCreateApplication = await ctx.ability.can(
+        db.application,
+        "create"
+      );
+      if (!userCanCreateApplication) {
+        throw new ForbiddenError("The user can't create an application");
       }
-      const offer = await db.post.findByPk(params.offerId);
-      if (!offer) {
-        throw new ForbiddenError("Job offer does not exist");
-      }
-      if (offer.stateId != 1) {
-        throw new ForbiddenError("Job offer is unavailable");
-      }
-      if (offer.ownerId == ctx.currentUser.id) {
-        throw new ForbiddenError("Owner can not apply to job offer");
-      }
-      if (await checkApplication(params.offerId, ctx.currentUser.id)) {
-        throw new ForbiddenError("User already applied for this job offer");
-      }
-      if (await checkEmployment(params.offerId, ctx.currentUser.id)) {
-        throw new ForbiddenError("User is already employed for this job");
-      }
+
+      await validateApplicationParameters(params, ctx.currentUser);
+
+      const applicationParams = {
+        offerId: params.offerId,
+        applicantId: ctx.currentUser.id,
+      };
+
       try {
-        params["applicantId"] = ctx.currentUser.id;
-        const newApplication = await db.application.create(params);
+        const newApplication = await db.application.create(applicationParams);
         return newApplication;
       } catch (error) {
         throw new ApolloError("Unexpected error", 500);
