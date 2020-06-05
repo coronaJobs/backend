@@ -8,6 +8,10 @@ const employmentMutations = `
         jobId: Int!
         employeeId: Int!
     ): Boolean
+
+    cancelJob(
+        jobId: Int!
+    ): Boolean
 `;
 
 module.exports = employmentMutations;

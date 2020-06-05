@@ -62,5 +62,26 @@ module.exports = {
         throw new ApolloError("Unexpected error", 500);
       }
     },
+
+    cancelJob: async (_, params, ctx) => {
+      if (!ctx.auth) {
+        throw new AuthenticationError("Not authenticated");
+      }
+      const offer = await db.post.findByPk(params.jobId);
+      jobValidations(offer, ctx);
+      if (offer.stateId == 3 || offer.stateId == 4) {
+        throw new ForbiddenError(
+          "Can not cancel job, because it has already finished or been cancelled"
+        );
+      }
+      try {
+        await offer.update({
+          stateId: 4,
+        });
+        return true;
+      } catch (error) {
+        throw new ApolloError("Unexpected error", 500);
+      }
+    },
   },
 };
