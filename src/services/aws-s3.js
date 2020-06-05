@@ -12,7 +12,7 @@ const s3 = new aws.S3();
 
 // S3 required params
 const s3BaseParams = {
-  Bucket: process.env.AWS_BUCKET_NAME || "coronajobs_pictures",
+  Bucket: process.env.AWS_BUCKET_NAME,
   Expires: Number(process.env.AWS_EXPIRATION_TIME) || 60,
 };
 
