@@ -40,12 +40,28 @@ const processRut = (params, validationErrors) => {
   }
 };
 
+const processProfilePicture = (params, validationErrors) => {
+  const { profilePicture } = params;
+  if (profilePicture != "image/jpeg") {
+    validationErrors.profilePicture = "Invalid image type";
+  }
+};
+
+const processResumeUrl = async (params, validationErrors) => {
+  const { resumeUrl } = params;
+  if (resumeUrl != "application/pdf") {
+    validationErrors.resumeUrl = "Invalid file type";
+  }
+};
+
 const validateUserParameters = async (params) => {
   const validationErrors = {};
   processMail(params, validationErrors);
   processPhone(params, validationErrors);
   processName(params, validationErrors);
   processRut(params, validationErrors);
+  processProfilePicture(params, validationErrors);
+  processResumeUrl(params, validationErrors);
 
   if (Object.keys(validationErrors).length) {
     throw new UserInputError("Failed to save data due to validation errors", {

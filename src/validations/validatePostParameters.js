@@ -39,8 +39,14 @@ const validateCommuneId = async (communeId, validatorErrors) => {
   }
 };
 
+const validatePicture = async (picture, validatorErrors) => {
+  if (picture != "image/jpeg") {
+    validatorErrors.picture = "Invalid image type";
+  }
+};
+
 const validatePostParameters = async (params) => {
-  const { name, description, applicantLimit, communeId } = params;
+  const { name, description, applicantLimit, communeId, picture } = params;
 
   const validatorErrors = {};
 
@@ -48,6 +54,7 @@ const validatePostParameters = async (params) => {
   await validateDescription(description, validatorErrors);
   await validateApplicantLimit(applicantLimit, validatorErrors);
   await validateCommuneId(communeId, validatorErrors);
+  await validatePicture(picture, validatorErrors);
 
   if (Object.keys(validatorErrors).length) {
     throw new UserInputError("Failed to fetch data due to validation errors", {
