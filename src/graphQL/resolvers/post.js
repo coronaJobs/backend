@@ -67,10 +67,10 @@ module.exports = {
       }
 
       const posts = await db.post.findAll(filter);
-      const presignedPosts = await posts.filter((post) => {
+      const presignedPosts = await posts.filter(async (post) => {
         const path = post.picture;
         if (path) {
-          const signedUrl = getFileUrl(path);
+          const signedUrl = await getFileUrl(path);
           post.picture = signedUrl;
         }
         return post;

@@ -17,15 +17,15 @@ module.exports = {
   Query: {
     getUsers: async (_, params, ctx) => {
       const users = await db.user.findAll();
-      return await users.filter((user) => {
+      return await users.filter(async (user) => {
         const picturePath = user.profilePicture;
         if (picturePath) {
-          user.profilePicture = getFileUrl(picturePath);
+          user.profilePicture = await getFileUrl(picturePath);
         }
 
         const resumePath = user.resumeUrl;
         if (resumePath) {
-          user.resumeUrl = getFileUrl(resumePath);
+          user.resumeUrl = await getFileUrl(resumePath);
         }
         return user;
       });
