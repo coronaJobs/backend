@@ -40,7 +40,7 @@ const validateCommuneId = async (communeId, validatorErrors) => {
 };
 
 const validatePicture = async (picture, validatorErrors) => {
-  if (picture != "image/jpeg") {
+  if (picture && picture != "image/jpeg") {
     validatorErrors.picture = "Invalid image type";
   }
 };
