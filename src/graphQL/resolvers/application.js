@@ -4,11 +4,7 @@ const {
   AuthenticationError,
   ForbiddenError,
 } = require("apollo-server");
-const {
-  deleteApplication,
-  checkApplication,
-  checkEmployment,
-} = require("../../utils");
+const { deleteApplication, checkApplication } = require("../../utils");
 const { validateApplicationParameters } = require("./../../validations");
 module.exports = {
   Subscription: {},
