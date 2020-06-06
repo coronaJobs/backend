@@ -9,7 +9,8 @@ const {
   checkApplication,
   checkEmployment,
   deleteEmployment,
-  updatePostState,
+  updatePostStateDueToCapacity,
+  updatePostStateDueToOwnersAction,
   jobValidations,
 } = require("../../utils");
 
@@ -35,7 +36,7 @@ module.exports = {
           employeeId: params.applicantId,
           jobId: params.offerId,
         });
-        await updatePostState(offer);
+        await updatePostStateDueToCapacity(offer);
         return newEmployment;
       } catch (error) {
         throw new ApolloError("Unexpected error", 500);
@@ -56,7 +57,7 @@ module.exports = {
       }
       try {
         await deleteEmployment(params.jobId, params.employeeId);
-        await updatePostState(offer);
+        await updatePostStateDueToCapacity(offer);
         return true;
       } catch (error) {
         throw new ApolloError("Unexpected error", 500);
@@ -64,24 +65,11 @@ module.exports = {
     },
 
     cancelJob: async (_, params, ctx) => {
-      if (!ctx.auth) {
-        throw new AuthenticationError("Not authenticated");
-      }
-      const offer = await db.post.findByPk(params.jobId);
-      jobValidations(offer, ctx);
-      if (offer.stateId == 3 || offer.stateId == 4) {
-        throw new ForbiddenError(
-          "Can not cancel job, because it has already finished or been cancelled"
-        );
-      }
-      try {
-        await offer.update({
-          stateId: 4,
-        });
-        return true;
-      } catch (error) {
-        throw new ApolloError("Unexpected error", 500);
-      }
+      return await updatePostStateDueToOwnersAction(params, ctx, "cancel");
+    },
+
+    finishJob: async (_, params, ctx) => {
+      return await updatePostStateDueToOwnersAction(params, ctx, "finish");
     },
   },
 };

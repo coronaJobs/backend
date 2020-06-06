@@ -1,5 +1,9 @@
 const { db } = require("../models");
-const { ForbiddenError } = require("apollo-server");
+const {
+  ApolloError,
+  ForbiddenError,
+  AuthenticationError,
+} = require("apollo-server");
 
 const checkEmployment = async (jobId, employeeId) => {
   const userEmployments = await db.employment.findAll({
@@ -25,7 +29,7 @@ const deleteEmployment = async (jobId, employeeId) => {
   await employment.destroy();
 };
 
-const updatePostState = async (post) => {
+const updatePostStateDueToCapacity = async (post) => {
   const jobEmployees = await db.employment.findAll({
     where: {
       jobId: post.id,
@@ -51,9 +55,37 @@ const jobValidations = (offer, ctx) => {
   }
 };
 
+const updatePostStateDueToOwnersAction = async (params, ctx, action) => {
+  if (!ctx.auth) {
+    throw new AuthenticationError("Not authenticated");
+  }
+  const decisionEnum = {
+    finish: 3,
+    cancel: 4,
+  };
+  const offer = await db.post.findByPk(params.jobId);
+  jobValidations(offer, ctx);
+  if (offer.stateId == 3 || offer.stateId == 4) {
+    throw new ForbiddenError(
+      "Can not " +
+        action +
+        " job, because it has already finished or been cancelled"
+    );
+  }
+  try {
+    await offer.update({
+      stateId: decisionEnum[action],
+    });
+    return true;
+  } catch (error) {
+    throw new ApolloError("Unexpected error", 500);
+  }
+};
+
 module.exports = {
   checkEmployment,
   deleteEmployment,
-  updatePostState,
+  updatePostStateDueToCapacity,
+  updatePostStateDueToOwnersAction,
   jobValidations,
 };
