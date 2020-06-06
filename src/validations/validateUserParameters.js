@@ -76,6 +76,20 @@ const processPassword = (params, validationErrors) => {
   }
 };
 
+const processProfilePicture = (params, validationErrors) => {
+  const { profilePicture } = params;
+  if (profilePicture && profilePicture != "image/jpeg") {
+    validationErrors.profilePicture = "Invalid image type";
+  }
+};
+
+const processResumeUrl = async (params, validationErrors) => {
+  const { resumeUrl } = params;
+  if (resumeUrl && resumeUrl != "application/pdf") {
+    validationErrors.resumeUrl = "Invalid file type";
+  }
+};
+
 const validateUserParameters = async (params) => {
   const validationErrors = {};
   await processMail(params, validationErrors);
@@ -84,6 +98,8 @@ const validateUserParameters = async (params) => {
   processName(params, validationErrors);
   processAddress(params, validationErrors);
   processPassword(params, validationErrors);
+  processProfilePicture(params, validationErrors);
+  processResumeUrl(params, validationErrors);
 
   if (Object.keys(validationErrors).length) {
     throw new UserInputError("Failed to save data due to validation errors", {

@@ -4,7 +4,8 @@ Object.assign(
   validators,
   require("./validateUserParameters"),
   require("./validatePostSearchParameters"),
-  require("./validatePostParameters")
+  require("./validatePostParameters"),
+  require("./validateApplicationParameters")
 );
 
 module.exports = validators;
