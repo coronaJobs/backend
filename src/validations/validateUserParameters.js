@@ -42,14 +42,14 @@ const processRut = (params, validationErrors) => {
 
 const processProfilePicture = (params, validationErrors) => {
   const { profilePicture } = params;
-  if (profilePicture != "image/jpeg") {
+  if (profilePicture && profilePicture != "image/jpeg") {
     validationErrors.profilePicture = "Invalid image type";
   }
 };
 
 const processResumeUrl = async (params, validationErrors) => {
   const { resumeUrl } = params;
-  if (resumeUrl != "application/pdf") {
+  if (resumeUrl && resumeUrl != "application/pdf") {
     validationErrors.resumeUrl = "Invalid file type";
   }
 };
