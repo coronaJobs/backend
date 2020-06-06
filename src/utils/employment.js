@@ -59,7 +59,7 @@ const updatePostStateDueToOwnersAction = async (params, ctx, action) => {
   if (!ctx.auth) {
     throw new AuthenticationError("Not authenticated");
   }
-  const decisionEnum = {
+  const actionEnum = {
     finish: 3,
     cancel: 4,
   };
@@ -74,7 +74,7 @@ const updatePostStateDueToOwnersAction = async (params, ctx, action) => {
   }
   try {
     await offer.update({
-      stateId: decisionEnum[action],
+      stateId: actionEnum[action],
     });
     return true;
   } catch (error) {
