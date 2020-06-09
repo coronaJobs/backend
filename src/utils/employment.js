@@ -4,6 +4,8 @@ const {
   ForbiddenError,
   AuthenticationError,
 } = require("apollo-server");
+const tensify = require("tensify");
+const _ = require("underscore");
 
 const checkEmployment = async (jobId, employeeId) => {
   const userEmployments = await db.employment.findAll({
@@ -62,14 +64,24 @@ const updatePostStateDueToOwnersAction = async (params, ctx, action) => {
   const actionEnum = {
     finish: 3,
     cancel: 4,
+    initialize: 5,
   };
   const offer = await db.post.findByPk(params.jobId);
   jobValidations(offer, ctx);
+
+  if (offer.stateId == actionEnum[action]) {
+    throw new ForbiddenError(
+      `Can not ${action} job, because it has already been ${
+        tensify(action).past_participle
+      }.`
+    );
+  }
+
   if (offer.stateId == 3 || offer.stateId == 4) {
     throw new ForbiddenError(
-      "Can not " +
-        action +
-        " job, because it has already finished or been cancelled"
+      `Can not ${action} job, because it has been ${
+        tensify(_.invert(actionEnum)[offer.stateId]).past_participle
+      }.`
     );
   }
   try {
