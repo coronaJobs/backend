@@ -71,5 +71,9 @@ module.exports = {
     finishJob: async (_, params, ctx) => {
       return await updatePostStateDueToOwnersAction(params, ctx, "finish");
     },
+
+    initializeJob: async (_, params, ctx) => {
+      return await updatePostStateDueToOwnersAction(params, ctx, "initialize");
+    },
   },
 };

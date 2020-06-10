@@ -16,6 +16,10 @@ const employmentMutations = `
     finishJob(
         jobId: Int!
     ): Boolean
+
+    initializeJob(
+        jobId: Int!
+    ): Boolean
 `;
 
 module.exports = employmentMutations;
