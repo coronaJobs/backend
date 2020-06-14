@@ -5,7 +5,10 @@ const {
   ForbiddenError,
 } = require("apollo-server");
 const { deleteApplication, checkApplication } = require("../../utils");
-const { validateApplicationParameters } = require("./../../validations");
+const {
+  validateApplicationParameters,
+  validateCancelApplicationParameters,
+} = require("./../../validations");
 module.exports = {
   Subscription: {},
 
@@ -35,12 +38,16 @@ module.exports = {
     },
 
     cancelApplication: async (_, params, ctx) => {
-      if (!ctx.auth) {
-        throw new AuthenticationError("Not authenticated");
+      const userCanCancelApplication = await ctx.ability.can(
+        db.application,
+        "cancel"
+      );
+      if (!userCanCancelApplication) {
+        throw new ForbiddenError("The user can't cancel an application");
       }
-      if (!(await checkApplication(params.offerId, ctx.currentUser.id))) {
-        throw new ForbiddenError("User is not applying for this job offer");
-      }
+
+      await validateCancelApplicationParameters(params, ctx.currentUser);
+
       try {
         await deleteApplication(params.offerId, ctx.currentUser.id);
         return true;
