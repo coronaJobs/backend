@@ -1,25 +1,37 @@
-'use strict'
+"use strict";
 module.exports = (sequelize, DataTypes) => {
-    const post = sequelize.define('post', {
-      name: DataTypes.STRING,
-      description: DataTypes.STRING,
-      applicantLimit: DataTypes.INTEGER,
-      active: {type: DataTypes.BOOLEAN, defaultValue: true},
+  const post = sequelize.define("post", {
+    name: DataTypes.STRING,
+    description: DataTypes.STRING,
+    applicantLimit: DataTypes.INTEGER,
+    picture: DataTypes.STRING,
+    active: { type: DataTypes.BOOLEAN, defaultValue: true },
+  });
+
+  post.associate = (models) => {
+    post.belongsTo(models.user, {
+      foreignKey: "ownerId",
+      as: "owner",
     });
-
-    post.associate = models => {
-      post.belongsTo(models.user, {
-        foreignKey: 'ownerId',
-        as: 'owner'
-      });
-      post.belongsTo(models.postState, {
-        foreignKey: 'stateId',
-        as: 'state'
-      });
-      post.hasMany(models.post, {
-        foreignKey: 'postId',
-        as: 'evaluations'});
-    };
-
-    return post;
+    post.belongsTo(models.postState, {
+      foreignKey: "stateId",
+      as: "state",
+    });
+    post.belongsToMany(models.user, {
+      through: "application",
+      as: "applicants",
+      foreignKey: "offerId",
+    });
+    post.belongsToMany(models.user, {
+      through: "employment",
+      as: "employees",
+      foreignKey: "jobId",
+    });
+    post.belongsTo(models.commune, {
+      foreignKey: "communeId",
+      as: "commune",
+    });
   };
+
+  return post;
+};
