@@ -29,7 +29,7 @@ const getUploadUrl = async (filename) => {
   Object.assign(getParams, s3BaseParams);
 
   // Return a temporal url for upload the file
-  const url = await s3.getSignedUrl("putObject", getParams);
+  const url = await s3.getSignedUrl("putObject", getParams, (err, url) => url);
   return { url, filePath };
 };
 
@@ -38,7 +38,11 @@ const getFileUrl = async (filePath) => {
     // Get the temporal url for the file
     const getParams = { Key: filePath };
     Object.assign(getParams, s3BaseParams);
-    const url = await s3.getSignedUrl("getObject", getParams);
+    const url = await s3.getSignedUrl(
+      "getObject",
+      getParams,
+      (err, ulr) => url
+    );
     return { url };
   } catch (error) {
     // If there's no file, then return a null one
