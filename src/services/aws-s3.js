@@ -13,7 +13,7 @@ const s3 = new aws.S3();
 // S3 required params
 const s3BaseParams = {
   Bucket: process.env.AWS_BUCKET_NAME,
-  Expires: Number(process.env.AWS_EXPIRATION_TIME) || 60,
+  Expires: Number(process.env.AWS_EXPIRATION_TIME),
 };
 
 const getUploadUrl = async (filename) => {
@@ -29,7 +29,7 @@ const getUploadUrl = async (filename) => {
   Object.assign(getParams, s3BaseParams);
 
   // Return a temporal url for upload the file
-  const url = await s3.getSignedUrl("putObject", getParams, (err, url) => url);
+  const url = await s3.getSignedUrl("putObject", getParams);
   return { url, filePath };
 };
 
