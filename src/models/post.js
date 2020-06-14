@@ -16,6 +16,9 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'stateId',
         as: 'state'
       });
+      post.hasMany(models.post, {
+        foreignKey: 'postId',
+        as: 'evaluations'});
     };
 
     return post;
