@@ -41,8 +41,8 @@ module.exports = {
           updatedAt: "2020-04-25 13:17:36.847+00",
         },
         {
-          name: "payed",
-          description: "The job has been payed by the employer.",
+          name: "paid",
+          description: "The job has been paid by the employer.",
           active: true,
           createdAt: "2020-04-25 13:17:36.847+00",
           updatedAt: "2020-04-25 13:17:36.847+00",
