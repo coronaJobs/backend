@@ -10,6 +10,7 @@ const {
   ApolloError,
 } = require("apollo-server");
 const { validateUserParameters } = require("../../validations");
+const { Op } = require("sequelize");
 
 module.exports = {
   Subscription: {},
@@ -180,6 +181,13 @@ module.exports = {
       return await user.getJobs({
         where: {
           active: true,
+        },
+      });
+    },
+    finishedJobs: async (user) => {
+      return await user.getJobs({
+        where: {
+          [Op.or]: [{ stateId: 3 }, { stateId: 6 }],
         },
       });
     },
