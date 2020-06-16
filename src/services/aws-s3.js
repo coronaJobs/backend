@@ -37,11 +37,7 @@ const getFileUrl = async (filePath) => {
     // Get the temporal url for the file
     const getParams = { Key: filePath };
     Object.assign(getParams, s3BaseParams);
-    const url = await s3.getSignedUrl(
-      "getObject",
-      getParams,
-      (err, ulr) => url
-    );
+    const url = await s3.getSignedUrl("getObject", getParams);
     return { url };
   } catch (error) {
     // If there's no file, then return a null one
