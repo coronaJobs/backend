@@ -70,7 +70,7 @@ module.exports = {
       const presignedPosts = await posts.filter(async (post) => {
         const path = post.picture;
         if (path) {
-          const { url } = await getFileUrl(path);
+          const { url } = await getFileUrl("postPictures" + path);
           post.picture = url;
         }
         return post;
@@ -87,7 +87,7 @@ module.exports = {
         if (post) {
           const { picture } = params;
           if (picture) {
-            const { url } = await getFileUrl(picture);
+            const { url } = await getFileUrl("postPictures" + picture);
             post.picture = url;
           }
           return post;
