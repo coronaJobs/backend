@@ -11,7 +11,7 @@
   "dependencies": {
     "@fdograph/rut-utilities": "^1.2.1",
     "apollo-server": "^2.9.16",
-    "aws-sdk": "^2.686.0",
+    "aws-sdk": "^2.696.0",
     "bcryptjs": "^2.4.3",
     "crypto-js": "^4.0.0",
     "glob": "^7.1.6",

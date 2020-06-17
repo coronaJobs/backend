@@ -12,6 +12,8 @@ type User {
     role: Role!
     applications: [Post]
     jobs: [Post]
+    comments: [String]
+    rating: Float
 }
 `;
 

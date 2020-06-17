@@ -20,6 +20,13 @@ const employmentMutations = `
     initializeJob(
         jobId: Int!
     ): Boolean
+
+    createEmployeeEvaluation(
+        postId: Int!
+        employeeId: Int!
+        comment: String!
+        rating: Int!
+    ): Employment
 `;
 
 module.exports = employmentMutations;

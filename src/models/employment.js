@@ -5,6 +5,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.BOOLEAN,
       defaultValue: true,
     },
+    employeeRating: DataTypes.INTEGER,
+    employeeComment: DataTypes.STRING,
+    employerRating: DataTypes.INTEGER,
+    employerComment: DataTypes.STRING,
   });
 
   return employment;

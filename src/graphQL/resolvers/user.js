@@ -4,12 +4,14 @@ const {
   getFileUrl,
   deleteResource,
 } = require("../../services/aws-s3");
+const { Op } = require("sequelize");
 const {
   AuthenticationError,
   ForbiddenError,
   ApolloError,
 } = require("apollo-server");
 const { validateUserParameters } = require("../../validations");
+const { getRoleNames } = require("../../utils");
 
 module.exports = {
   Subscription: {},
@@ -182,6 +184,34 @@ module.exports = {
           active: true,
         },
       });
+    },
+    comments: async (user) => {
+      const comments = [];
+      const roleName = getRoleNames(user)[user.roleId];
+
+      const employments = await db.employment.findAll({
+        where: {
+          [Op.and]: [roleName.id, roleName.comment],
+        },
+      });
+      employments.forEach((employment) => {
+        comments.push(employment[roleName.commentName]);
+      });
+      return comments;
+    },
+    rating: async (user) => {
+      let globalRating = 0;
+      const roleName = getRoleNames(user)[user.roleId];
+      const employments = await db.employment.findAll({
+        where: {
+          [Op.and]: [roleName.id, roleName.rating],
+        },
+      });
+      employments.forEach((employment) => {
+        globalRating += employment[roleName.name];
+      });
+      const rating = globalRating / employments.length;
+      return rating;
     },
   },
 };

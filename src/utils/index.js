@@ -1,5 +1,10 @@
 const utils = {};
 
-Object.assign(utils, require("./application"), require("./employment"));
+Object.assign(
+  utils,
+  require("./application"),
+  require("./employment"),
+  require("./user")
+);
 
 module.exports = utils;
