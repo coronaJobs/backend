@@ -6,6 +6,11 @@ const applicationAbility = (ability, currentUser) => {
       const role = await currentUser.getRole();
       return role.name == "employee";
     });
+
+    ability.createAbility(db.application, "cancel", async (params) => {
+      const role = await currentUser.getRole();
+      return role.name == "employee";
+    });
   }
 };
 

@@ -14,6 +14,7 @@ type User {
     jobs: [Post]
     comments: [String]
     rating: Float
+    finishedJobs: [Post]
 }
 `;
 

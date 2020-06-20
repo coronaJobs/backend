@@ -13,6 +13,7 @@ const {
 const { validateUserParameters } = require("../../validations");
 const { getRoleNames } = require("../../utils");
 
+
 module.exports = {
   Subscription: {},
 
@@ -212,6 +213,13 @@ module.exports = {
       });
       const rating = globalRating / employments.length;
       return rating;
+    },
+    finishedJobs: async (user) => {
+      return await user.getJobs({
+        where: {
+          [Op.or]: [{ stateId: 3 }, { stateId: 6 }],
+        },
+      });
     },
   },
 };
