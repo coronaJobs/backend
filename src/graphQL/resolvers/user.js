@@ -37,9 +37,7 @@ module.exports = {
     getUser: async (_, { id }, ctx) => {
       const user = await db.user.findByPk(id);
       if (user.profilePicture) {
-        const { url } = await getFileUrl(
-          user.profilePicture
-        );
+        const { url } = await getFileUrl(user.profilePicture);
         user.profilePicture = url;
       }
       if (user.resumeUrl) {
@@ -110,7 +108,7 @@ module.exports = {
 
       try {
         // Get user
-        const editedUser = await db.user.findByPk(params.id);
+        const editedUser = await db.user.findByPk(Number(params.id));
 
         // Get profile picture presigned upload URL
         if (profilePicture) {
