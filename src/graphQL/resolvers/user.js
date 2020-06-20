@@ -113,7 +113,7 @@ module.exports = {
         // Get profile picture presigned upload URL
         if (profilePicture) {
           deleteResource(editedUser.profilePicture);
-          const { url, filePath } = await getUploadUrl(profilePicture);
+          const { url, filePath } = await getUploadUrl("profilePictures", profilePicture);
           Object.assign(params, { profilePicture: filePath });
           pictureUploadUrl = url;
         }
@@ -121,7 +121,7 @@ module.exports = {
         // Get CV presigned download URL
         if (resumeUrl) {
           deleteResource(editedUser.resumeUrl);
-          const { url, filePath } = await getUploadUrl(resumeUrl);
+          const { url, filePath } = await getUploadUrl("resumes", resumeUrl);
           Object.assign(params, { resumeUrl: filePath });
           resumeUploadUrl = url;
         }
