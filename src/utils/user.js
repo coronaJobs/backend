@@ -13,7 +13,7 @@ const getRoleNames = (user) => {
       id: { employeeId: user.id },
       rating: { employeeRating: { [Op.not]: null } },
       comment: { employeeComment: { [Op.not]: null } },
-      name: "employeeRating",
+      ratingName: "employeeRating",
       commentName: "employeeComment",
     },
   };

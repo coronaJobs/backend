@@ -208,7 +208,7 @@ module.exports = {
         },
       });
       employments.forEach((employment) => {
-        globalRating += employment[roleName.name];
+        globalRating += employment[roleName.ratingName];
       });
       const rating = globalRating / employments.length;
       return rating;
