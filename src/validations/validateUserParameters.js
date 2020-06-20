@@ -78,7 +78,7 @@ const processPassword = (params, validationErrors) => {
 
 const processProfilePicture = (params, validationErrors) => {
   const { profilePicture } = params;
-  if (profilePicture && profilePicture != "image/jpeg") {
+  if (profilePicture && profilePicture.split('/')[0] != "image") {
     validationErrors.profilePicture = "Invalid image type";
   }
 };
