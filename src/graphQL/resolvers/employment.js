@@ -122,7 +122,6 @@ module.exports = {
           jobId: postId,
         },
       });
-      console.log("afasdfasdf", employment);
       try {
         return await employment.update({
           employerComment: comment,
