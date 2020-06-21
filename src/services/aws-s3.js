@@ -13,18 +13,17 @@ const s3 = new aws.S3();
 // S3 required params
 const s3BaseParams = {
   Bucket: process.env.AWS_BUCKET_NAME,
-  Expires: Number(process.env.AWS_EXPIRATION_TIME) || 60,
+  Expires: Number(process.env.AWS_EXPIRATION_TIME),
 };
 
-const getUploadUrl = async (filename) => {
+const getUploadUrl = async (folder, mime) => {
   // Generate file path
-  const filenameParts = filename.split(".");
-  const extension = filenameParts[filenameParts.length - 1];
+  const extension = mime.split("/").slice(-1)[0];
   // missing extension validation
   const timestamp = (new Date() / 1).toString();
 
   // Generate the path for the file in the bucket
-  const filePath = `${timestamp}.${extension}`;
+  const filePath = `${folder}/${timestamp}.${extension}`;
   const getParams = { Key: filePath };
   Object.assign(getParams, s3BaseParams);
 

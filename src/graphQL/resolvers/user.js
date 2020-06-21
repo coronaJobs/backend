@@ -64,14 +64,17 @@ module.exports = {
       try {
         // Get profile picture presigned upload URL
         if (profilePicture) {
-          const { url, filePath } = await getUploadUrl(profilePicture);
+          const { url, filePath } = await getUploadUrl(
+            "profilePictures",
+            profilePicture
+          );
           Object.assign(params, { profilePicture: filePath });
           pictureUploadUrl = url;
         }
 
         // Get CV presigned upload URL
         if (resumeUrl) {
-          const { url, filePath } = await getUploadUrl(resumeUrl);
+          const { url, filePath } = await getUploadUrl("resumes", resumeUrl);
           Object.assign(params, { resumeUrl: filePath });
           resumeUploadUrl = url;
         }
@@ -107,7 +110,7 @@ module.exports = {
 
       try {
         // Get user
-        const editedUser = await db.user.findByPk(params.id);
+        const editedUser = await db.user.findByPk(Number(params.id));
 
         // Get profile picture presigned upload URL
         if (profilePicture) {
