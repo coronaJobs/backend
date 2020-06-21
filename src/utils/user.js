@@ -21,18 +21,18 @@ const getEmploymentsByRole = async (user) => {
       // employer
       employments = [];
       const posts = await user.getPosts();
-      posts.forEach(async (post) => {
-        const employment = await db.employment.find({
+      for (let index = 0; index < posts.length; index++) {
+        const employment = await db.employment.findOne({
           where: {
             [Op.and]: [
-              { jobId: post.id },
+              { jobId: posts[index].id },
               { employerRating: { [Op.not]: null } },
               { employerComment: { [Op.not]: null } },
             ],
           },
         });
         employments.push(employment);
-      });
+      }
       break;
     }
     case 2: {

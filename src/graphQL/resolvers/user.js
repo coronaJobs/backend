@@ -197,6 +197,7 @@ module.exports = {
     rating: async (user) => {
       let globalRating = 0;
       const roleName = getRoleNames(user)[user.roleId];
+      // console.log('EL ROLE', roleName);
       const employments = await getEmploymentsByRole(user);
       employments.forEach((employment) => {
         globalRating += employment[roleName.ratingName];
