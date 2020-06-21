@@ -11,8 +11,7 @@ const {
   ApolloError,
 } = require("apollo-server");
 const { validateUserParameters } = require("../../validations");
-const { getRoleNames } = require("../../utils");
-
+const { getRoleNames, getEmploymentsByRole } = require("../../utils");
 
 module.exports = {
   Subscription: {},
@@ -189,12 +188,7 @@ module.exports = {
     comments: async (user) => {
       const comments = [];
       const roleName = getRoleNames(user)[user.roleId];
-
-      const employments = await db.employment.findAll({
-        where: {
-          [Op.and]: [roleName.id, roleName.comment],
-        },
-      });
+      const employments = await getEmploymentsByRole(user);
       employments.forEach((employment) => {
         comments.push(employment[roleName.commentName]);
       });
@@ -203,11 +197,7 @@ module.exports = {
     rating: async (user) => {
       let globalRating = 0;
       const roleName = getRoleNames(user)[user.roleId];
-      const employments = await db.employment.findAll({
-        where: {
-          [Op.and]: [roleName.id, roleName.rating],
-        },
-      });
+      const employments = await getEmploymentsByRole(user);
       employments.forEach((employment) => {
         globalRating += employment[roleName.ratingName];
       });
