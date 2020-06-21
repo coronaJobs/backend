@@ -23,7 +23,8 @@ const getUploadUrl = async (folder, mime) => {
   const timestamp = (new Date() / 1).toString();
 
   // Generate the path for the file in the bucket
-  const filePath = `${folder}/${timestamp}.${extension}`;
+  // const filePath = `${folder}/${timestamp}.${extension}`;
+  const filePath = `${folder}-${timestamp}.${extension}`;
   const getParams = { Key: filePath };
   Object.assign(getParams, s3BaseParams);
 
