@@ -22,7 +22,7 @@ const getEmploymentsByRole = async (user) => {
       employments = [];
       const posts = await user.getPosts();
       for (let index = 0; index < posts.length; index++) {
-        const employment = await db.employment.findOne({
+        const employmentPostList = await db.employment.findAll({
           where: {
             [Op.and]: [
               { jobId: posts[index].id },
@@ -31,7 +31,7 @@ const getEmploymentsByRole = async (user) => {
             ],
           },
         });
-        employments.push(employment);
+        employments.push(...employmentPostList);
       }
       break;
     }
