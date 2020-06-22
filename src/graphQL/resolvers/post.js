@@ -176,5 +176,12 @@ module.exports = {
     commune: async (post) => {
       return await post.getCommune();
     },
+    employments: async (post) => {
+      return await db.employment.findAll({
+        where: {
+          jobId: post.id,
+        },
+      });
+    },
   },
 };
