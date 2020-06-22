@@ -1,9 +1,5 @@
 const { db } = require("../../models");
-const {
-  ApolloError,
-  AuthenticationError,
-  ForbiddenError,
-} = require("apollo-server");
+const { ApolloError, ForbiddenError } = require("apollo-server");
 const {
   deleteApplication,
   checkApplication,
@@ -12,6 +8,7 @@ const {
   updatePostStateDueToCapacity,
   updatePostStateDueToOwnersAction,
   jobValidations,
+  checkIfEmploymentsArePaid,
 } = require("../../utils");
 
 module.exports = {
@@ -19,9 +16,6 @@ module.exports = {
 
   Mutation: {
     createEmployment: async (_, params, ctx) => {
-      if (!ctx.auth) {
-        throw new AuthenticationError("Not authenticated");
-      }
       const offer = await db.post.findByPk(params.offerId);
       jobValidations(offer, ctx);
       if (offer.stateId != 1) {
@@ -44,9 +38,6 @@ module.exports = {
     },
 
     removeEmployee: async (_, params, ctx) => {
-      if (!ctx.auth) {
-        throw new AuthenticationError("Not authenticated");
-      }
       const offer = await db.post.findByPk(params.jobId);
       jobValidations(offer, ctx);
       if (offer.stateId != 1 && offer.stateId != 2) {
@@ -64,6 +55,35 @@ module.exports = {
       }
     },
 
+    markEmploymentAsPaid: async (_, params, ctx) => {
+      const { jobId } = params;
+      const employeeId = ctx.currentUser.id;
+      if (!(await checkEmployment(jobId, employeeId))) {
+        throw new ForbiddenError("User is not employed for this job");
+      }
+      const post = await db.post.findByPk(jobId);
+      if (post.stateId != 3) {
+        throw new ForbiddenError(
+          "Can not mark as paid, because job is not finished."
+        );
+      }
+      const employment = await db.employment.findOne({
+        where: {
+          employeeId,
+          jobId,
+        },
+      });
+      if (employment.paid) {
+        throw new ForbiddenError("Employment already marked as paid.");
+      }
+      try {
+        await employment.update({ paid: true });
+        return true;
+      } catch (error) {
+        throw new ApolloError("Unexpected error", 500);
+      }
+    },
+
     cancelJob: async (_, params, ctx) => {
       return await updatePostStateDueToOwnersAction(params, ctx, "cancel");
     },
@@ -73,7 +93,26 @@ module.exports = {
     },
 
     initializeJob: async (_, params, ctx) => {
+      const jobEmployments = await db.employment.findAll({
+        where: {
+          jobId: params.jobId,
+        },
+      });
+      if (!jobEmployments.length) {
+        throw new ForbiddenError(
+          "Can not initialize job, because no employees have been accepted."
+        );
+      }
       return await updatePostStateDueToOwnersAction(params, ctx, "initialize");
+    },
+
+    payJob: async (_, params, ctx) => {
+      if (!(await checkIfEmploymentsArePaid(params.jobId))) {
+        throw new ForbiddenError(
+          "Can not mark job as paid, because not all employees have been paid or there are no employees."
+        );
+      }
+      return await updatePostStateDueToOwnersAction(params, ctx, "pay");
     },
 
     createEmployeeEvaluation: async (_, params, ctx) => {

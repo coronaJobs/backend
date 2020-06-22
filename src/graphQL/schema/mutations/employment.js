@@ -21,6 +21,14 @@ const employmentMutations = `
         jobId: Int!
     ): Boolean
 
+    markEmploymentAsPaid(
+        jobId: Int!
+    ): Boolean
+
+    payJob(
+        jobId: Int!
+    ): Boolean
+
     createEmployeeEvaluation(
         postId: Int!
         employeeId: Int!

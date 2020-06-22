@@ -1,10 +1,6 @@
 const { db } = require("../../models");
-const {
-  ApolloError,
-  AuthenticationError,
-  ForbiddenError,
-} = require("apollo-server");
-const { deleteApplication, checkApplication } = require("../../utils");
+const { ApolloError, ForbiddenError } = require("apollo-server");
+const { deleteApplication } = require("../../utils");
 const {
   validateApplicationParameters,
   validateCancelApplicationParameters,

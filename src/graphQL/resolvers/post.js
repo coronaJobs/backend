@@ -8,6 +8,7 @@ const { Op } = require("sequelize");
 const { DateTime } = require("luxon");
 const { AuthenticationError, ApolloError } = require("apollo-server");
 const { getUploadUrl, getFileUrl } = require("../../services/aws-s3");
+const { checkIfEmploymentsArePaid } = require("../../utils");
 
 module.exports = {
   Subscription: {},
@@ -175,6 +176,9 @@ module.exports = {
     },
     commune: async (post) => {
       return await post.getCommune();
+    },
+    areAllEmploymentsPaid: async (post) => {
+      return await checkIfEmploymentsArePaid(post.id);
     },
     employments: async (post) => {
       return await db.employment.findAll({

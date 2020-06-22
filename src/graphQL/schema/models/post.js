@@ -11,6 +11,7 @@ type Post {
     employees: [User]
     commune: Commune
     createdAt: DateTime
+    areAllEmploymentsPaid: Boolean
     employments: [Employment]
 }
 `;
