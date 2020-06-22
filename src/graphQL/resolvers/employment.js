@@ -104,5 +104,32 @@ module.exports = {
         throw new ApolloError("Unexpected error", 500);
       }
     },
+    createEmployerEvaluation: async (_, params, ctx) => {
+      const { postId, comment, rating } = params;
+      const post = await db.post.findByPk(postId);
+
+      if (!(await checkEmployment(postId, ctx.currentUser.id))) {
+        throw new ForbiddenError("Current user is not employed for this job");
+      }
+
+      if (post.stateId !== 3 && post.stateId !== 6) {
+        throw new ForbiddenError("The job is not finished or paid");
+      }
+
+      const employment = await db.employment.findOne({
+        where: {
+          employeeId: ctx.currentUser.id,
+          jobId: postId,
+        },
+      });
+      try {
+        return await employment.update({
+          employerComment: comment,
+          employerRating: rating,
+        });
+      } catch (error) {
+        throw new ApolloError("Unexpected error", 500);
+      }
+    },
   },
 };

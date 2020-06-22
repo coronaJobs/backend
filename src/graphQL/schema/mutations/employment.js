@@ -27,6 +27,12 @@ const employmentMutations = `
         comment: String!
         rating: Int!
     ): Employment
+
+    createEmployerEvaluation(
+        postId: Int!
+        comment: String!
+        rating: Int!
+    ): Employment
 `;
 
 module.exports = employmentMutations;
