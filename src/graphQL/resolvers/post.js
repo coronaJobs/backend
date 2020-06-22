@@ -180,5 +180,12 @@ module.exports = {
     areAllEmploymentsPaid: async (post) => {
       return await checkIfEmploymentsArePaid(post.id);
     },
+    employments: async (post) => {
+      return await db.employment.findAll({
+        where: {
+          jobId: post.id,
+        },
+      });
+    },
   },
 };

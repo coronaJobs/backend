@@ -12,6 +12,7 @@ type Post {
     commune: Commune
     createdAt: DateTime
     areAllEmploymentsPaid: Boolean
+    employments: [Employment]
 }
 `;
 
