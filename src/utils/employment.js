@@ -49,6 +49,9 @@ const updatePostStateDueToCapacity = async (post) => {
 };
 
 const jobValidations = (offer, ctx) => {
+  if (!ctx.auth) {
+    throw new AuthenticationError("Not authenticated");
+  }
   if (!offer) {
     throw new ForbiddenError("Job offer does not exist");
   }
@@ -58,35 +61,38 @@ const jobValidations = (offer, ctx) => {
 };
 
 const updatePostStateDueToOwnersAction = async (params, ctx, action) => {
-  if (!ctx.auth) {
-    throw new AuthenticationError("Not authenticated");
-  }
-  const actionEnum = {
+  const actionNumbers = {
+    open: 1,
+    close: 2,
     finish: 3,
     cancel: 4,
     initialize: 5,
+    pay: 6,
   };
   const offer = await db.post.findByPk(params.jobId);
   jobValidations(offer, ctx);
-
-  if (offer.stateId == actionEnum[action]) {
-    throw new ForbiddenError(
-      `Can not ${action} job, because it has already been ${
-        tensify(action).past_participle
-      }.`
+  const allowedActions = {
+    // actionNumber: [postStates in which the action can be performed]
+    3: [5], // Can finish job only if it is initialized.
+    4: [1, 2, 5],
+    5: [1, 2],
+    6: [3],
+  };
+  if (!allowedActions[actionNumbers[action]].includes(offer.stateId)) {
+    const statesStrings = allowedActions[actionNumbers[action]].map(
+      (stateNumber) =>
+        tensify(_.invert(actionNumbers)[stateNumber]).past_participle
     );
-  }
-
-  if (offer.stateId == 3 || offer.stateId == 4) {
+    const statesStringsJoined = statesStrings.join(" or ");
     throw new ForbiddenError(
-      `Can not ${action} job, because it has been ${
-        tensify(_.invert(actionEnum)[offer.stateId]).past_participle
-      }.`
+      `This job is currently ${
+        tensify(_.invert(actionNumbers)[offer.stateId]).past_participle
+      }. Can not ${action} it, because it is not ${statesStringsJoined}.`
     );
   }
   try {
     await offer.update({
-      stateId: actionEnum[action],
+      stateId: actionNumbers[action],
     });
     return true;
   } catch (error) {

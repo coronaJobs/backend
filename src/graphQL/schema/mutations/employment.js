@@ -20,6 +20,14 @@ const employmentMutations = `
     initializeJob(
         jobId: Int!
     ): Boolean
+
+    markEmploymentAsPaid(
+        jobId: Int!
+    ): Boolean
+
+    payJob(
+        jobId: Int!
+    ): Boolean
 `;
 
 module.exports = employmentMutations;
