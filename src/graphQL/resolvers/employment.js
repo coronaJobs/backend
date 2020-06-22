@@ -114,5 +114,34 @@ module.exports = {
       }
       return await updatePostStateDueToOwnersAction(params, ctx, "pay");
     },
+
+    createEmployeeEvaluation: async (_, params, ctx) => {
+      const { employeeId, postId, comment, rating } = params;
+      const post = await db.post.findByPk(postId);
+      jobValidations(post, ctx);
+
+      if (!(await checkEmployment(postId, employeeId))) {
+        throw new ForbiddenError("User is not employed for this job");
+      }
+
+      if (post.stateId !== 3 && post.stateId !== 6) {
+        throw new ForbiddenError("The job is not finished or paid");
+      }
+
+      const employment = await db.employment.findOne({
+        where: {
+          employeeId,
+          jobId: postId,
+        },
+      });
+      try {
+        return await employment.update({
+          employeeComment: comment,
+          employeeRating: rating,
+        });
+      } catch (error) {
+        throw new ApolloError("Unexpected error", 500);
+      }
+    },
   },
 };

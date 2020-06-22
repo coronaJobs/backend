@@ -4,7 +4,8 @@ Object.assign(
   utils,
   require("./application"),
   require("./employment"),
-  require("./post")
+  require("./post"),
+  require("./user")
 );
 
 module.exports = utils;

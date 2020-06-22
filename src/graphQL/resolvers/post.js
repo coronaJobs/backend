@@ -122,7 +122,7 @@ module.exports = {
       // Get picture presigned URL
       let url, filePath;
       if (picture) {
-        const uploadData = await getUploadUrl(picture);
+        const uploadData = await getUploadUrl("postPictures", picture);
         url = uploadData.url;
         filePath = uploadData.filePath;
       }
